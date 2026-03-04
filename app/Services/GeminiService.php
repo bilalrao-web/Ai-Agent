@@ -8,7 +8,10 @@ class GeminiService
 {
     protected int $maxToolRounds = 5;
 
-    public function generateResponse(string $userQuery, array $contextData = []): string
+    /**
+     * @param  array<int, array{role: string, content: string}>  $conversationHistory
+     */
+    public function generateResponse(string $userQuery, array $contextData = [], array $conversationHistory = []): string
     {
         $apiKey = config('services.gemini.api_key');
         if (empty($apiKey)) {
@@ -18,18 +21,30 @@ class GeminiService
         $model = config('services.gemini.model', 'gemini-2.0-flash');
         $url = "https://generativelanguage.googleapis.com/v1beta/models/{$model}:generateContent?key={$apiKey}";
 
-        $systemInstruction = 'You are a helpful customer support AI assistant. Answer based only on the context data provided. Be concise and professional.';
         $contextJson = json_encode($contextData, JSON_PRETTY_PRINT);
-        $fullPrompt = "Context data:\n{$contextJson}\n\nCustomer query: {$userQuery}";
+        $systemInstruction = 'You are a helpful customer support AI agent. Be concise, max 2 sentences. Answer based on provided customer data only.'
+            . "\n\nContext data (JSON):\n{$contextJson}";
+
+        $contents = [];
+        foreach ($conversationHistory as $msg) {
+            $role = ($msg['role'] ?? '') === 'assistant' ? 'model' : 'user';
+            $contents[] = [
+                'role' => $role,
+                'parts' => [['text' => $msg['content'] ?? '']],
+            ];
+        }
+        if (empty($contents)) {
+            $contents[] = [
+                'role' => 'user',
+                'parts' => [['text' => $userQuery]],
+            ];
+        }
 
         try {
             $response = Http::timeout(30)->post($url, [
-                'contents' => [
-                    [
-                        'parts' => [
-                            ['text' => $fullPrompt],
-                        ],
-                    ],
+                'contents' => $contents,
+                'systemInstruction' => [
+                    'parts' => [['text' => $systemInstruction]],
                 ],
                 'generationConfig' => [
                     'temperature' => 0.7,

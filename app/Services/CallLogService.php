@@ -7,11 +7,12 @@ use App\Models\ConversationMessage;
 
 class CallLogService
 {
-    public function createLog(int $customerId, string $simulatedQuery): CallLog
+    public function createLog(?int $customerId, string $simulatedQuery, ?string $callSid = null): CallLog
     {
         return CallLog::create([
             'customer_id' => $customerId,
             'simulated_query' => $simulatedQuery,
+            'call_sid' => $callSid,
             'duration' => 0,
             'status' => 'completed',
         ]);

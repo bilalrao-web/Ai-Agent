@@ -13,6 +13,7 @@ class CallLog extends Model
 
     protected $fillable = [
         'customer_id',
+        'call_sid',
         'transcript',
         'simulated_query',
         'duration',
