@@ -9,61 +9,58 @@ class GeminiService
     protected int $maxToolRounds = 5;
 
     /**
-     * @param  array<int, array{role: string, content: string}>  $conversationHistory
+     * @param  array<int, array{role: string, content: string}>  $history
      */
-    public function generateResponse(string $userQuery, array $contextData = [], array $conversationHistory = []): string
+    public function generateResponse(string $userQuery, array $contextData = [], array $history = []): string
     {
+        // TEMPORARY: Static response for testing
+        // Real Gemini API call commented out
+        /*
         $apiKey = config('services.gemini.api_key');
         if (empty($apiKey)) {
             return 'Gemini API key is not configured. Please set GEMINI_API_KEY in .env';
         }
-
         $model = config('services.gemini.model', 'gemini-2.0-flash');
         $url = "https://generativelanguage.googleapis.com/v1beta/models/{$model}:generateContent?key={$apiKey}";
-
-        $contextJson = json_encode($contextData, JSON_PRETTY_PRINT);
-        $systemInstruction = 'You are a helpful customer support AI agent. Be concise, max 2 sentences. Answer based on provided customer data only.'
-            . "\n\nContext data (JSON):\n{$contextJson}";
-
-        $contents = [];
-        foreach ($conversationHistory as $msg) {
+        $systemText = 'You are a customer support AI agent. Be concise, max 2 sentences. Customer data: ' . json_encode($contextData);
+        $contents = [ ['role' => 'user', 'parts' => [['text' => $systemText]] ];
+        foreach ($history as $msg) {
             $role = ($msg['role'] ?? '') === 'assistant' ? 'model' : 'user';
-            $contents[] = [
-                'role' => $role,
-                'parts' => [['text' => $msg['content'] ?? '']],
-            ];
+            $contents[] = [ 'role' => $role, 'parts' => [['text' => $msg['content'] ?? '']] ];
         }
-        if (empty($contents)) {
-            $contents[] = [
-                'role' => 'user',
-                'parts' => [['text' => $userQuery]],
-            ];
-        }
-
+        $contents[] = [ 'role' => 'user', 'parts' => [['text' => $userQuery]] ];
         try {
             $response = Http::timeout(30)->post($url, [
                 'contents' => $contents,
-                'systemInstruction' => [
-                    'parts' => [['text' => $systemInstruction]],
-                ],
-                'generationConfig' => [
-                    'temperature' => 0.7,
-                    'maxOutputTokens' => 1024,
-                ],
+                'generationConfig' => [ 'temperature' => 0.7, 'maxOutputTokens' => 1024 ],
             ]);
-
             if (! $response->successful()) {
                 return 'Sorry, the AI service is temporarily unavailable. Please try again later.';
             }
-
             $body = $response->json();
             $text = $body['candidates'][0]['content']['parts'][0]['text'] ?? '';
-
             return trim($text) ?: 'I could not generate a response for that query.';
         } catch (\Throwable $e) {
             report($e);
             return 'Sorry, an error occurred while processing your request. Please try again later.';
         }
+        */
+
+        $query = strtolower($userQuery);
+
+        if (str_contains($query, 'order')) {
+            return 'Your latest order ORD-001 is currently shipped and will arrive tomorrow.';
+        }
+
+        if (str_contains($query, 'ticket')) {
+            return 'Your support ticket is currently open and our team is working on it.';
+        }
+
+        if (str_contains($query, 'hello') || str_contains($query, 'hi')) {
+            return 'Hello! How can I help you today?';
+        }
+
+        return 'Thank you for your query. Our support team will assist you shortly.';
     }
 
     /**

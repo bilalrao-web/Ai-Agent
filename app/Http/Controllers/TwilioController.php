@@ -21,74 +21,54 @@ class TwilioController extends Controller
 
     public function handleInbound(Request $request): Response
     {
-        $callerNumber = $request->input('From');
-        $callSid = $request->input('CallSid');
+        $callerNumber = $request->input('From', 'unknown');
+        $callSid = $request->input('CallSid', 'test-' . time());
 
         $customer = Customer::where('phone', $callerNumber)->first();
-        $customerId = $customer?->id;
 
-        $simulatedQuery = "Inbound call from {$callerNumber}";
-        $callLog = $this->callLogService->createLog($customerId, $simulatedQuery, $callSid);
-        if ($callSid) {
-            $callLog->update(['status' => 'in_progress']);
-        }
+        $callLog = $this->callLogService->createLog(
+            customerId: $customer?->id,
+            simulatedQuery: 'Inbound call from ' . $callerNumber,
+            callSid: $callSid
+        );
 
-        session(['call_log_id' => $callLog->id, 'customer_id' => $customerId]);
-
-        $actionUrl = route('twilio.process-speech', [
-            'call_log_id' => $callLog->id,
-            'customer_id' => $customerId ?? 0,
-        ]);
+        session(['call_log_id' => $callLog->id]);
+        session(['customer_id' => $customer?->id]);
 
         $twiml = $this->twilioService->buildGatherResponse(
             'Welcome! How can I help you today? Please speak your query.',
-            $actionUrl
+            route('twilio.process-speech')
         );
 
-        return response($twiml, 200, ['Content-Type' => 'text/xml']);
+        return response($twiml, 200)->header('Content-Type', 'text/xml');
     }
 
     public function processSpeech(Request $request): Response
     {
-        $userSpeech = $request->input('SpeechResult', '');
-        $callLogId = (int) $request->input('call_log_id');
-        $customerIdInput = (int) $request->input('customer_id');
-        $customerId = $customerIdInput > 0 ? $customerIdInput : null;
+        $userSpeech = $request->input('SpeechResult', 'I need help');
+        $callLogId = session('call_log_id');
+        $customerId = session('customer_id');
 
-        if ($callLogId < 1) {
+        // If session not found, use latest call log (for testing purposes only)
+        if (! $callLogId) {
+            $latestLog = \App\Models\CallLog::latest()->first();
+            $callLogId = $latestLog?->id;
+            $customerId = $latestLog?->customer_id;
+        }
+
+        if (! $callLogId) {
             $twiml = $this->twilioService->buildVoiceResponse('Sorry, we could not identify your call. Goodbye.');
-            return response($twiml, 200, ['Content-Type' => 'text/xml']);
+            return response($twiml, 200)->header('Content-Type', 'text/xml');
         }
 
         $this->callLogService->addMessage($callLogId, 'user', $userSpeech);
 
-        $context = ['customer_name' => null];
-        if ($customerId) {
-            $customer = Customer::with([
-                'orders' => fn ($q) => $q->latest()->limit(3),
-                'tickets' => fn ($q) => $q->latest()->limit(3),
-            ])->find($customerId);
-            if ($customer) {
-                $context['customer_name'] = $customer->name;
-                $context['orders'] = $customer->orders->map(fn ($o) => [
-                    'id' => $o->id,
-                    'order_number' => $o->order_number,
-                    'status' => $o->status,
-                    'delivery_date' => $o->delivery_date?->toDateString(),
-                ])->toArray();
-                $context['tickets'] = $customer->tickets->map(fn ($t) => [
-                    'id' => $t->id,
-                    'issue_type' => $t->issue_type,
-                    'status' => $t->status,
-                ])->toArray();
-            }
-        }
-        if (empty($context['orders'])) {
-            $context['orders'] = [];
-        }
-        if (empty($context['tickets'])) {
-            $context['tickets'] = [];
-        }
+        $customer = $customerId ? Customer::find($customerId) : null;
+        $context = [
+            'customer_name' => $customer?->name ?? 'Guest',
+            'orders' => $customer?->orders()->latest()->take(3)->get(['id', 'order_number', 'status', 'delivery_date'])->toArray() ?? [],
+            'tickets' => $customer?->tickets()->latest()->take(3)->get(['id', 'issue_type', 'status'])->toArray() ?? [],
+        ];
 
         $history = ConversationMessage::where('call_log_id', $callLogId)
             ->orderBy('created_at')
@@ -100,14 +80,12 @@ class TwilioController extends Controller
 
         $this->callLogService->addMessage($callLogId, 'assistant', $aiResponse);
 
-        $actionUrl = route('twilio.process-speech', [
-            'call_log_id' => $callLogId,
-            'customer_id' => $customerId ?? 0,
-        ]);
+        $twiml = $this->twilioService->buildContinueResponse(
+            $aiResponse,
+            route('twilio.process-speech')
+        );
 
-        $twiml = $this->twilioService->buildContinueResponse($aiResponse, $actionUrl);
-
-        return response($twiml, 200, ['Content-Type' => 'text/xml']);
+        return response($twiml, 200)->header('Content-Type', 'text/xml');
     }
 
     public function handleStatusCallback(Request $request): Response

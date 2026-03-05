@@ -17,46 +17,45 @@ class TwilioService
     }
 
     /**
-     * Returns TwiML XML with <Say> only (voice: Polly.Joanna).
-     */
-    public function buildVoiceResponse(string $message): string
-    {
-        $message = htmlspecialchars($message, ENT_XML1 | ENT_QUOTES, 'UTF-8');
-        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Response><Say voice=\"Polly.Joanna\">{$message}</Say></Response>";
-    }
-
-    /**
-     * Returns TwiML with <Gather input="speech" timeout=5 speechTimeout="auto">, <Say> prompt inside, then fallback Say and Hangup.
+     * TwiML with <Gather input="speech" action="$actionUrl" timeout="5" speechTimeout="auto">, <Say> inside, then fallback.
      */
     public function buildGatherResponse(string $promptMessage, string $actionUrl): string
     {
         $promptMessage = htmlspecialchars($promptMessage, ENT_XML1 | ENT_QUOTES, 'UTF-8');
         $actionUrl = htmlspecialchars($actionUrl, ENT_XML1 | ENT_QUOTES, 'UTF-8');
         return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Response>"
-            . "<Gather input=\"speech\" timeout=\"5\" speechTimeout=\"auto\" action=\"{$actionUrl}\">"
+            . "<Gather input=\"speech\" action=\"{$actionUrl}\" timeout=\"5\" speechTimeout=\"auto\">"
             . "<Say voice=\"Polly.Joanna\">{$promptMessage}</Say>"
             . "</Gather>"
-            . "<Say voice=\"Polly.Joanna\">We did not receive input. Goodbye.</Say>"
-            . "<Hangup/>"
+            . "<Say voice=\"Polly.Joanna\">We did not receive any input. Goodbye.</Say>"
             . "</Response>";
     }
 
     /**
-     * Says the AI message, then Gathers "Kya aur kuch chahiye?", then Say "Thank you. Goodbye." and Hangup.
+     * Say AI message, then Gather "Is there anything else I can help you with?", then Say goodbye and Hangup.
      */
-    public function buildContinueResponse(string $message, string $actionUrl): string
+    public function buildContinueResponse(string $aiMessage, string $actionUrl): string
     {
-        $message = htmlspecialchars($message, ENT_XML1 | ENT_QUOTES, 'UTF-8');
+        $aiMessage = htmlspecialchars($aiMessage, ENT_XML1 | ENT_QUOTES, 'UTF-8');
         $actionUrl = htmlspecialchars($actionUrl, ENT_XML1 | ENT_QUOTES, 'UTF-8');
-        $followUp = htmlspecialchars('Kya aur kuch chahiye?', ENT_XML1 | ENT_QUOTES, 'UTF-8');
-        $goodbye = htmlspecialchars('Thank you. Goodbye.', ENT_XML1 | ENT_QUOTES, 'UTF-8');
+        $followUp = htmlspecialchars('Is there anything else I can help you with?', ENT_XML1 | ENT_QUOTES, 'UTF-8');
+        $goodbye = htmlspecialchars('Thank you for calling. Goodbye.', ENT_XML1 | ENT_QUOTES, 'UTF-8');
         return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Response>"
-            . "<Say voice=\"Polly.Joanna\">{$message}</Say>"
-            . "<Gather input=\"speech\" timeout=\"5\" speechTimeout=\"auto\" action=\"{$actionUrl}\">"
+            . "<Say voice=\"Polly.Joanna\">{$aiMessage}</Say>"
+            . "<Gather input=\"speech\" action=\"{$actionUrl}\" timeout=\"5\">"
             . "<Say voice=\"Polly.Joanna\">{$followUp}</Say>"
             . "</Gather>"
             . "<Say voice=\"Polly.Joanna\">{$goodbye}</Say>"
             . "<Hangup/>"
             . "</Response>";
+    }
+
+    /**
+     * Simple TwiML <Say voice="Polly.Joanna">$message</Say>
+     */
+    public function buildVoiceResponse(string $message): string
+    {
+        $message = htmlspecialchars($message, ENT_XML1 | ENT_QUOTES, 'UTF-8');
+        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Response><Say voice=\"Polly.Joanna\">{$message}</Say></Response>";
     }
 }
