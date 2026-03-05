@@ -32,6 +32,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $customTools = [
+            \App\Mcp\Tools\OrderStatus::class,
+        ];
+        config(['boost.mcp.tools.include' => array_merge(config('boost.mcp.tools.include', []), $customTools)]);
+
         Gate::policy(Customer::class, CustomerPolicy::class);
         Gate::policy(Order::class, OrderPolicy::class);
         Gate::policy(Ticket::class, TicketPolicy::class);
