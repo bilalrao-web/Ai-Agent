@@ -28,6 +28,10 @@ class CustomerResource extends Resource
                 Forms\Components\TextInput::make('name')->required()->maxLength(255),
                 Forms\Components\TextInput::make('phone')->tel()->required()->unique(ignoreRecord: true),
                 Forms\Components\TextInput::make('email')->email()->required()->unique(ignoreRecord: true),
+                Forms\Components\Select::make('user_id')
+                    ->relationship('user', 'name')
+                    ->searchable()
+                    ->nullable(),
             ]);
     }
 
