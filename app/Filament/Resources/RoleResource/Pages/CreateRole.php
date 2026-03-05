@@ -23,6 +23,9 @@ class CreateRole extends CreateRecord
     {
         if (! empty($this->pendingPermissionIds)) {
             $this->record->syncPermissions($this->pendingPermissionIds);
+            
+            // Clear permission cache so changes take effect immediately
+            app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
         }
     }
 }

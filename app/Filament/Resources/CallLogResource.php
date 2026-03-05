@@ -5,7 +5,6 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\CallLogResource\Pages;
 use App\Models\CallLog;
 use Filament\Forms\Form;
-use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
@@ -71,13 +70,6 @@ class CallLogResource extends Resource
                 TextEntry::make('escalated')->badge()->formatStateUsing(fn ($state) => $state ? 'Yes' : 'No'),
                 TextEntry::make('status')->badge(),
                 TextEntry::make('created_at')->dateTime(),
-                RepeatableEntry::make('conversationMessages')
-                    ->label('Conversation')
-                    ->schema([
-                        TextEntry::make('role')->badge(),
-                        TextEntry::make('content')->columnSpanFull(),
-                    ])
-                    ->columnSpanFull(),
             ]);
     }
 }

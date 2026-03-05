@@ -48,6 +48,16 @@ class RoleAndPermissionSeeder extends Seeder
             'view_own_tickets',
             'view_own_orders',
             'view_own_calls',
+            // Portal Resources - My Orders Module
+            'my_orders.view-any',
+            'my_orders.view',
+            // Portal Resources - My Tickets Module
+            'my_tickets.view-any',
+            'my_tickets.view',
+            'my_tickets.create',
+            // Portal Resources - My Call History Module
+            'my_call_history.view-any',
+            'my_call_history.view',
             // Roles & Permissions (admin UI)
             'manage_roles',
             'manage_permissions',
@@ -81,6 +91,17 @@ class RoleAndPermissionSeeder extends Seeder
         ]);
 
         $customer = Role::firstOrCreate(['name' => 'customer', 'guard_name' => 'web']);
-        $customer->syncPermissions(['view_own_tickets', 'view_own_orders', 'view_own_calls']);
+        $customer->syncPermissions([
+            'view_own_tickets', 
+            'view_own_orders', 
+            'view_own_calls',
+            'my_orders.view-any',
+            'my_orders.view',
+            'my_tickets.view-any',
+            'my_tickets.view',
+            'my_tickets.create',
+            'my_call_history.view-any',
+            'my_call_history.view',
+        ]);
     }
 }

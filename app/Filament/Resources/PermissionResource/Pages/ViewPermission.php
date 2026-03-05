@@ -23,8 +23,27 @@ class ViewPermission extends ViewRecord
     {
         return $infolist
             ->schema([
-                TextEntry::make('name'),
-                TextEntry::make('guard_name'),
+                \Filament\Infolists\Components\Section::make('Permission Information')
+                    ->schema([
+                        TextEntry::make('name')
+                            ->label('Permission Name')
+                            ->weight('bold')
+                            ->size('lg')
+                            ->copyable()
+                            ->copyMessage('Permission name copied!')
+                            ->copyMessageDuration(1500),
+                        TextEntry::make('guard_name')
+                            ->label('Guard Name')
+                            ->badge()
+                            ->color('gray'),
+                        TextEntry::make('created_at')
+                            ->label('Created At')
+                            ->dateTime('d/M/Y H:i'),
+                        TextEntry::make('updated_at')
+                            ->label('Updated At')
+                            ->dateTime('d/M/Y H:i'),
+                    ])
+                    ->columns(2),
             ]);
     }
 }

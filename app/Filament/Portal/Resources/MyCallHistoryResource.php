@@ -4,7 +4,6 @@ namespace App\Filament\Portal\Resources;
 
 use App\Filament\Portal\Resources\MyCallHistoryResource\Pages;
 use App\Models\CallLog;
-use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
@@ -56,6 +55,11 @@ class MyCallHistoryResource extends Resource
         return false;
     }
 
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->can('my_call_history.view-any') ?? false;
+    }
+
     public static function infolist(Infolist $infolist): Infolist
     {
         return $infolist
@@ -64,13 +68,6 @@ class MyCallHistoryResource extends Resource
                 TextEntry::make('duration')->suffix(' sec'),
                 TextEntry::make('status')->badge(),
                 TextEntry::make('created_at')->dateTime(),
-                RepeatableEntry::make('conversationMessages')
-                    ->label('Conversation')
-                    ->schema([
-                        TextEntry::make('role')->badge(),
-                        TextEntry::make('content')->columnSpanFull(),
-                    ])
-                    ->columnSpanFull(),
             ]);
     }
 }

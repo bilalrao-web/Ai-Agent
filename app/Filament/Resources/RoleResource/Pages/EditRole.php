@@ -11,6 +11,9 @@ class EditRole extends EditRecord
 {
     protected static string $resource = RoleResource::class;
 
+    /** @var array<int> */
+    protected array $pendingPermissionIds = [];
+
     protected function getHeaderActions(): array
     {
         return [
@@ -26,19 +29,20 @@ class EditRole extends EditRecord
 
     protected function mutateFormDataBeforeSave(array $data): array
     {
+        // Store permission IDs before unsetting
+        // If permissions are not in the form data, use current permissions (user didn't change them)
+        $this->pendingPermissionIds = $data['permissions'] ?? $this->record->permissions()->pluck('id')->toArray();
         unset($data['permissions']);
         return $data;
     }
 
-    protected function handleRecordUpdate(Model $record, array $data): Model
+    protected function afterSave(): void
     {
-        $record->update($data);
-
-        $permissionIds = $this->form->getState()['permissions'] ?? [];
-        if (is_array($permissionIds)) {
-            $record->syncPermissions($permissionIds);
-        }
-
-        return $record;
+        // Always sync permissions (even if empty array - means remove all permissions)
+        // This ensures permissions are always saved correctly
+        $this->record->syncPermissions($this->pendingPermissionIds ?? []);
+        
+        // Clear permission cache so changes take effect immediately
+        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
     }
 }

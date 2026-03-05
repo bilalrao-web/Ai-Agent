@@ -60,6 +60,11 @@ class MyOrderResource extends Resource
         return false;
     }
 
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->can('my_orders.view-any') ?? false;
+    }
+
     public static function infolist(Infolist $infolist): Infolist
     {
         return $infolist

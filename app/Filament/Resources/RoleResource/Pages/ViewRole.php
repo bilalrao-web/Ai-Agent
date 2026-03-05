@@ -23,9 +23,41 @@ class ViewRole extends ViewRecord
     {
         return $infolist
             ->schema([
-                TextEntry::make('name'),
-                TextEntry::make('guard_name'),
-                TextEntry::make('permissions.name')->badge()->separator(',')->label('Permissions'),
+                \Filament\Infolists\Components\Section::make('Role Information')
+                    ->schema([
+                        TextEntry::make('name')
+                            ->label('Role Name')
+                            ->weight('bold')
+                            ->size('lg'),
+                        TextEntry::make('guard_name')
+                            ->label('Guard Name')
+                            ->badge()
+                            ->color('gray'),
+                        TextEntry::make('created_at')
+                            ->label('Created At')
+                            ->dateTime('d/M/Y H:i'),
+                        TextEntry::make('updated_at')
+                            ->label('Updated At')
+                            ->dateTime('d/M/Y H:i'),
+                    ])
+                    ->columns(2),
+                \Filament\Infolists\Components\Section::make('Permissions')
+                    ->schema([
+                        TextEntry::make('permissions.name')
+                            ->label('Assigned Permissions')
+                            ->badge()
+                            ->separator(',')
+                            ->formatStateUsing(function ($state) {
+                                if (is_array($state)) {
+                                    return array_map(function ($name) {
+                                        return str_replace('_', ' ', ucwords($name, '_'));
+                                    }, $state);
+                                }
+                                return $state;
+                            })
+                            ->columnSpanFull(),
+                    ])
+                    ->collapsible(),
             ]);
     }
 }

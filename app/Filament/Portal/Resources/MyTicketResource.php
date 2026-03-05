@@ -19,7 +19,7 @@ class MyTicketResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-ticket';
     protected static ?string $navigationLabel = 'My Tickets';
-    protected static ?string $modelLabel = 'Ticket';
+    protected static ?string $modelLabel = 'My Ticket';
     protected static ?string $slug = 'my-tickets';
 
     public static function getEloquentQuery(): Builder
@@ -71,5 +71,15 @@ class MyTicketResource extends Resource
                 TextEntry::make('status')->badge(),
                 TextEntry::make('created_at')->dateTime(),
             ]);
+    }
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->can('my_tickets.view-any') ?? false;
+    }
+
+    public static function canCreate(): bool
+    {
+        return auth()->user()?->can('my_tickets.create') ?? false;
     }
 }
