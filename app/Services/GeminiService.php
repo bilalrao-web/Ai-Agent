@@ -8,12 +8,6 @@ class GeminiService
 {
     protected int $maxToolRounds = 5;
 
-    /**
-     * Generate a voice-friendly response using the Gemini API. Used for Twilio calls.
-     * Response is saved to DB and replayed to Twilio by TwilioController.
-     *
-     * @param  array<int, array{role: string, content: string}>  $history
-     */
     public function generateResponse(string $userQuery, array $contextData = [], array $history = []): string
     {
         $apiKey = config('services.gemini.api_key');
@@ -58,9 +52,6 @@ class GeminiService
         return trim($text) ?: 'I could not generate a response for that. Is there anything else I can help with?';
     }
 
-    /**
-     * Generate response using Gemini function calling. Model may request tools; we execute and send results back until we get final text.
-     */
     public function generateWithToolCalling(string $userQuery, int $customerId, GeminiToolExecutor $executor): string
     {
         $apiKey = config('services.gemini.api_key');

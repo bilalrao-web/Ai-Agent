@@ -32,7 +32,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Register custom MCP tools for Gemini CLI / Laravel Boost
         $customTools = [
             \App\Mcp\Tools\OrderStatus::class,
         ];
