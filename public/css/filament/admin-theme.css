@@ -1,0 +1,565 @@
+/* Custom Filament Admin Panel Theme Styling - Dark & Light Mode Support */
+
+/* Main Content Area - Dark Mode */
+.dark .fi-main,
+.dark .fi-main-content,
+html.dark .fi-main,
+html.dark .fi-main-content {
+    background: rgb(15, 23, 42) !important;
+}
+
+/* Main Content Area - Light Mode */
+.fi-main:not(.dark),
+.fi-main-content:not(.dark),
+html:not(.dark) .fi-main,
+html:not(.dark) .fi-main-content {
+    background: rgb(249, 250, 251) !important;
+}
+
+/* Sidebar Styling - Dark Mode */
+.dark .fi-sidebar,
+html.dark .fi-sidebar {
+    background: rgb(31, 41, 55) !important;
+    border-right: 1px solid rgb(55, 65, 81) !important;
+}
+
+/* Sidebar Styling - Light Mode */
+.fi-sidebar:not(.dark),
+html:not(.dark) .fi-sidebar {
+    background: rgb(255, 255, 255) !important;
+    border-right: 1px solid rgb(229, 231, 235) !important;
+}
+
+.fi-sidebar-nav-item {
+    border-radius: 0.5rem;
+    margin: 0.25rem 0.5rem;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Sidebar Nav Item Hover - Dark Mode */
+.dark .fi-sidebar-nav-item:hover,
+html.dark .fi-sidebar-nav-item:hover {
+    background: rgb(55, 65, 81) !important;
+}
+
+/* Sidebar Nav Item Hover - Light Mode */
+html:not(.dark) .fi-sidebar-nav-item:hover {
+    background: rgb(243, 244, 246) !important;
+}
+
+.fi-sidebar-nav-item-active {
+    background: rgb(59, 130, 246) !important;
+    color: white !important;
+}
+
+/* Force compact grid layout */
+.fi-wi-stats-overview > div,
+.fi-widget-stats-overview > div {
+    gap: 12px !important; /* Tighten cards */
+}
+
+/* Widget Card Styling - Stats Overview with Gradients & Glassmorphism */
+.fi-wi-stats-overview-stat,
+.fi-widget-stats-overview-stat {
+    padding: 1.75rem !important; /* Professional inner spacing */
+    border-radius: 16px !important;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.5) !important;
+    border: none !important;
+    position: relative;
+    overflow: hidden;
+    margin: 0 !important;
+    min-height: 160px !important;
+    backdrop-filter: blur(12px);
+}
+
+/* Gradient backgrounds for each stat card */
+.fi-widget-stats-overview-stat:nth-child(1) {
+    background: linear-gradient(135deg, rgb(59, 130, 246) 0%, rgb(30, 64, 175) 100%) !important;
+}
+
+.fi-widget-stats-overview-stat:nth-child(2) {
+    background: linear-gradient(135deg, rgb(59, 130, 246) 0%, rgb(30, 64, 175) 100%) !important;
+}
+
+.fi-widget-stats-overview-stat:nth-child(3) {
+    background: linear-gradient(135deg, rgb(168, 85, 247) 0%, rgb(126, 34, 206) 100%) !important;
+}
+
+.fi-widget-stats-overview-stat:nth-child(4) {
+    background: linear-gradient(135deg, rgb(239, 68, 68) 0%, rgb(185, 28, 28) 100%) !important;
+}
+
+/* Dark mode - keep gradients but darker */
+.dark .fi-widget-stats-overview-stat:nth-child(1),
+html.dark .fi-widget-stats-overview-stat:nth-child(1) {
+    background: linear-gradient(135deg, rgb(59, 130, 246) 0%, rgb(30, 64, 175) 100%) !important;
+}
+
+.dark .fi-widget-stats-overview-stat:nth-child(2),
+html.dark .fi-widget-stats-overview-stat:nth-child(2) {
+    background: linear-gradient(135deg, rgb(59, 130, 246) 0%, rgb(30, 64, 175) 100%) !important;
+}
+
+.dark .fi-widget-stats-overview-stat:nth-child(3),
+html.dark .fi-widget-stats-overview-stat:nth-child(3) {
+    background: linear-gradient(135deg, rgb(168, 85, 247) 0%, rgb(126, 34, 206) 100%) !important;
+}
+
+.dark .fi-widget-stats-overview-stat:nth-child(4),
+html.dark .fi-widget-stats-overview-stat:nth-child(4) {
+    background: linear-gradient(135deg, rgb(239, 68, 68) 0%, rgb(185, 28, 28) 100%) !important;
+}
+
+/* Light mode - lighter gradients */
+html:not(.dark) .fi-widget-stats-overview-stat:nth-child(1) {
+    background: linear-gradient(135deg, rgb(96, 165, 250) 0%, rgb(59, 130, 246) 100%) !important;
+}
+
+html:not(.dark) .fi-widget-stats-overview-stat:nth-child(2) {
+    background: linear-gradient(135deg, rgb(96, 165, 250) 0%, rgb(59, 130, 246) 100%) !important;
+}
+
+html:not(.dark) .fi-widget-stats-overview-stat:nth-child(3) {
+    background: linear-gradient(135deg, rgb(192, 132, 252) 0%, rgb(168, 85, 247) 100%) !important;
+}
+
+html:not(.dark) .fi-widget-stats-overview-stat:nth-child(4) {
+    background: linear-gradient(135deg, rgb(248, 113, 113) 0%, rgb(239, 68, 68) 100%) !important;
+}
+
+.fi-widget-stats-overview-stat:hover {
+    transform: translateY(-2px) scale(1.01);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.2) !important;
+}
+
+.fi-widget-chart:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Align labels and descriptions tightly */
+.fi-wi-stats-overview-stat-label,
+.fi-widget-stats-overview-stat-label {
+    font-size: 0.875rem !important;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.95) !important;
+    font-weight: 700 !important;
+    margin-bottom: 0.5rem !important;
+}
+
+/* Stat description styling */
+.fi-wi-stats-overview-stat-description,
+.fi-widget-stats-overview-stat-description {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-size: 0.8125rem !important;
+    margin-top: 0.75rem !important;
+    font-weight: 500 !important;
+}
+
+/* Make values pop more */
+.fi-wi-stats-overview-stat-value,
+.fi-widget-stats-overview-stat-value {
+    font-size: 2.25rem !important;
+    letter-spacing: -0.025em;
+    font-weight: 800 !important;
+    color: #fff !important;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    line-height: 1.2 !important;
+    margin-top: 0.5rem !important;
+}
+
+/* Stat Description - White text with slight transparency */
+.fi-widget-stats-overview-stat-description {
+    color: rgba(255, 255, 255, 0.85) !important;
+    font-size: 0.875rem !important;
+    margin-top: 1rem !important;
+    font-weight: 400;
+}
+
+/* Chart Widget Styling - Dark Mode */
+.dark .fi-widget-chart,
+html.dark .fi-widget-chart {
+    background: rgb(31, 41, 55) !important;
+    border: 1px solid rgb(55, 65, 81) !important;
+}
+
+/* Chart Widget Styling - Light Mode */
+html:not(.dark) .fi-widget-chart {
+    background: rgb(255, 255, 255) !important;
+    border: 1px solid rgb(229, 231, 235) !important;
+}
+
+/* Remove card borders for a "glassmorphism" look - Charts only */
+.fi-widget-chart {
+    border: none !important;
+    background: rgba(30, 41, 59, 0.7) !important; /* Translucent blue-grey */
+    backdrop-filter: blur(12px);
+    box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Stat cards keep their gradients but add glassmorphism effect */
+.fi-wi-stats-overview-stat,
+.fi-widget-stats-overview-stat {
+    backdrop-filter: blur(12px);
+}
+
+.fi-widget-chart {
+    border-radius: 16px !important;
+    padding: 2rem !important;
+    transition: all 0.3s ease-in-out;
+    margin: 0 !important;
+    min-height: 420px !important;
+}
+
+.fi-widget-chart:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+}
+
+.fi-widget-chart-header {
+    margin-bottom: 0.375rem !important;
+    padding: 0 !important;
+}
+
+/* Chart Heading - Dark Mode */
+.dark .fi-widget-chart-heading,
+html.dark .fi-widget-chart-heading {
+    color: rgb(243, 244, 246) !important;
+}
+
+/* Chart Heading - Light Mode */
+html:not(.dark) .fi-widget-chart-heading {
+    color: rgb(17, 24, 39) !important;
+}
+
+/* Make Chart headings bigger and more prominent */
+.fi-wi-chart-heading,
+.fi-widget-chart-heading {
+    letter-spacing: -0.025em;
+    font-weight: 800 !important;
+    font-size: 1.25rem !important;
+    margin-bottom: 1rem !important;
+    color: rgb(243, 244, 246) !important;
+}
+
+/* Chart Description - Dark Mode */
+.dark .fi-widget-chart-description,
+html.dark .fi-widget-chart-description {
+    color: rgb(156, 163, 175) !important;
+}
+
+/* Chart Description - Light Mode */
+html:not(.dark) .fi-widget-chart-description {
+    color: rgb(107, 114, 128) !important;
+}
+
+.fi-widget-chart-description {
+    font-size: 0.9375rem !important;
+    margin-top: 0.5rem !important;
+    margin-bottom: 1rem !important;
+}
+
+/* Table Widget Styling - Dark Mode with Glassmorphism */
+.dark .fi-widget-table,
+html.dark .fi-widget-table {
+    background: rgba(31, 41, 55, 0.7) !important;
+    border: none !important;
+    backdrop-filter: blur(12px);
+}
+
+.dark .fi-widget-table-header,
+html.dark .fi-widget-table-header {
+    background: rgb(31, 41, 55) !important;
+    border-bottom: 1px solid rgb(55, 65, 81) !important;
+}
+
+/* Table Widget Styling - Light Mode */
+html:not(.dark) .fi-widget-table {
+    background: rgb(255, 255, 255) !important;
+    border: 1px solid rgb(229, 231, 235) !important;
+}
+
+html:not(.dark) .fi-widget-table-header {
+    background: rgb(255, 255, 255) !important;
+    border-bottom: 1px solid rgb(229, 231, 235) !important;
+}
+
+.fi-widget-table {
+    border-radius: 16px !important;
+    overflow: hidden;
+    box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.5) !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.fi-widget-table-header {
+    padding: 1.25rem 1.5rem !important;
+}
+
+.fi-widget-table-heading {
+    font-size: 1.5rem !important;
+    font-weight: 700 !important;
+    color: rgb(243, 244, 246) !important;
+}
+
+/* Table Heading - Dark Mode */
+.dark .fi-widget-table-heading,
+html.dark .fi-widget-table-heading {
+    color: rgb(243, 244, 246) !important;
+}
+
+/* Table Heading - Light Mode */
+html:not(.dark) .fi-widget-table-heading {
+    color: rgb(17, 24, 39) !important;
+}
+
+.fi-widget-table-heading {
+    font-size: 1.125rem !important;
+    font-weight: 600 !important;
+}
+
+/* Dashboard Page Styling - Dark Mode */
+.dark .fi-page,
+html.dark .fi-page {
+    background: rgb(15, 23, 42) !important;
+}
+
+.dark .fi-page-header-heading,
+html.dark .fi-page-header-heading {
+    color: rgb(243, 244, 246) !important;
+}
+
+/* Dashboard Page Styling - Light Mode */
+html:not(.dark) .fi-page {
+    background: rgb(249, 250, 251) !important;
+}
+
+html:not(.dark) .fi-page-header-heading {
+    color: rgb(17, 24, 39) !important;
+}
+
+/* Chart container improvements */
+.fi-widget-chart canvas {
+    max-height: 380px !important;
+    height: 380px !important;
+}
+
+.fi-widget-chart > div {
+    height: 400px !important;
+    min-height: 400px !important;
+}
+
+/* Reduce spacing between widgets - Professional compact layout */
+.fi-section-content-ctn {
+    gap: 12px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    row-gap: 12px !important;
+    column-gap: 12px !important;
+}
+
+/* Fix for the "Too Much Space" issue between different widgets */
+.fi-wi-widget,
+.fi-widget {
+    margin: 0 !important;
+    margin-bottom: 0.5rem !important;
+}
+
+/* Stats overview widget container - ensure single row layout */
+.fi-widget-stats-overview {
+    gap: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Force first 4 widgets (stats) to be in one row - equal width and height */
+.fi-section-content-ctn > *:nth-child(1),
+.fi-section-content-ctn > *:nth-child(2),
+.fi-section-content-ctn > *:nth-child(3),
+.fi-section-content-ctn > *:nth-child(4) {
+    grid-column: span 1 !important;
+    width: 100% !important;
+    align-self: stretch !important;
+}
+
+/* Ensure stat cards inside have equal height */
+.fi-section-content-ctn > *:nth-child(1) .fi-widget-stats-overview-stat,
+.fi-section-content-ctn > *:nth-child(2) .fi-widget-stats-overview-stat,
+.fi-section-content-ctn > *:nth-child(3) .fi-widget-stats-overview-stat,
+.fi-section-content-ctn > *:nth-child(4) .fi-widget-stats-overview-stat {
+    min-height: 220px !important;
+    height: 100% !important;
+}
+
+/* Chart widget container */
+.fi-widget-chart {
+    margin-bottom: 0 !important;
+    margin-top: 0 !important;
+}
+
+/* Table widget container */
+.fi-widget-table {
+    margin-bottom: 0 !important;
+    margin-top: 0 !important;
+}
+
+/* Remove extra padding from widget containers */
+.fi-section {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Grid alignment for widgets */
+.fi-section-content {
+    gap: 0.25rem !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Compact table widget */
+.fi-widget-table {
+    padding: 0 !important;
+}
+
+/* Dashboard page padding reduction - Professional compact layout */
+.fi-page > div {
+    padding: 0.75rem !important;
+}
+
+.fi-page-header {
+    margin-bottom: 0.375rem !important;
+    padding-bottom: 0.25rem !important;
+}
+
+/* Ensure widgets align properly in grid */
+.fi-section-content-ctn > * {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Remove all extra spacing from widget containers */
+.fi-widget > * {
+    margin: 0 !important;
+}
+
+/* Ensure proper grid alignment - no gaps */
+.fi-section-content-ctn {
+    align-items: stretch !important;
+}
+
+/* Widget wrapper spacing removal */
+.fi-widget > div > div {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Remove default margins from widget wrappers */
+.fi-widget-stats-overview > div {
+    gap: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Ensure first 4 widgets (stats) are in one row - properly aligned */
+.fi-section-content-ctn > *:nth-child(1),
+.fi-section-content-ctn > *:nth-child(2),
+.fi-section-content-ctn > *:nth-child(3),
+.fi-section-content-ctn > *:nth-child(4) {
+    grid-column: span 1 !important;
+    align-self: stretch !important;
+    height: 100% !important;
+}
+
+/* Make sure stats widgets have equal height and alignment */
+.fi-section-content-ctn > *:nth-child(1) .fi-widget-stats-overview-stat,
+.fi-section-content-ctn > *:nth-child(2) .fi-widget-stats-overview-stat,
+.fi-section-content-ctn > *:nth-child(3) .fi-widget-stats-overview-stat,
+.fi-section-content-ctn > *:nth-child(4) .fi-widget-stats-overview-stat {
+    height: 100% !important;
+    min-height: 160px !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+/* Remove extra spacing from widget containers */
+.fi-widget > div {
+    margin: 0 !important;
+}
+
+/* Ensure proper alignment of stat cards */
+.fi-widget-stats-overview-stat {
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+}
+
+/* Table styling improvements - Dark Mode */
+.dark .fi-ta-table,
+html.dark .fi-ta-table {
+    background: rgb(31, 41, 55) !important;
+}
+
+.dark .fi-ta-header-cell,
+html.dark .fi-ta-header-cell {
+    color: rgb(156, 163, 175) !important;
+    background: rgb(31, 41, 55) !important;
+    border-color: rgb(55, 65, 81) !important;
+}
+
+.dark .fi-ta-cell,
+html.dark .fi-ta-cell {
+    color: rgb(243, 244, 246) !important;
+    border-color: rgb(55, 65, 81) !important;
+}
+
+.dark .fi-ta-row:hover,
+html.dark .fi-ta-row:hover {
+    background: rgb(55, 65, 81) !important;
+}
+
+/* Table styling improvements - Light Mode */
+html:not(.dark) .fi-ta-table {
+    background: rgb(255, 255, 255) !important;
+}
+
+html:not(.dark) .fi-ta-header-cell {
+    color: rgb(107, 114, 128) !important;
+    background: rgb(249, 250, 251) !important;
+    border-color: rgb(229, 231, 235) !important;
+}
+
+html:not(.dark) .fi-ta-cell {
+    color: rgb(17, 24, 39) !important;
+    border-color: rgb(229, 231, 235) !important;
+}
+
+html:not(.dark) .fi-ta-row:hover {
+    background: rgb(249, 250, 251) !important;
+}
+
+.fi-ta-table {
+    font-size: 0.875rem !important;
+}
+
+.fi-ta-header-cell {
+    font-size: 0.75rem !important;
+    padding: 0.5rem 0.75rem !important;
+}
+
+.fi-ta-cell {
+    padding: 0.5rem 0.75rem !important;
+}
+
+/* Badge colors for better visibility */
+.fi-badge {
+    border-radius: 0.375rem !important;
+    padding: 0.25rem 0.75rem !important;
+    font-size: 0.75rem !important;
+    font-weight: 500 !important;
+}

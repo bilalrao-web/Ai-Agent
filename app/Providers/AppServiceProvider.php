@@ -16,6 +16,8 @@ use App\Policies\TicketPolicy;
 use App\Policies\UserPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use Filament\Support\Facades\FilamentView;
+use Illuminate\Contracts\View\View;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -38,5 +40,11 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(CallLog::class, CallLogPolicy::class);
         Gate::policy(Faq::class, FaqPolicy::class);
         Gate::policy(User::class, UserPolicy::class);
+        
+        // Register custom CSS for Filament admin panel
+        FilamentView::registerRenderHook(
+            'panels::head.end',
+            fn (): View => view('filament.admin.styles'),
+        );
     }
 }

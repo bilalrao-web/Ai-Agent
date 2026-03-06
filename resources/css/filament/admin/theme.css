@@ -1,0 +1,145 @@
+.fi-main {
+    background: rgb(17, 24, 39) !important;
+}
+
+.fi-main-content {
+    background: rgb(17, 24, 39) !important;
+}
+
+.fi-sidebar {
+    background: rgb(31, 41, 55) !important;
+    border-right: 1px solid rgb(55, 65, 81) !important;
+}
+
+.fi-sidebar-nav-item {
+    border-radius: 0.5rem;
+    margin: 0.25rem 0.5rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.fi-sidebar-nav-item:hover {
+    background: rgb(55, 65, 81) !important;
+}
+
+.fi-sidebar-nav-item-active {
+    background: rgb(59, 130, 246) !important;
+    color: white !important;
+}
+
+.fi-widget-stats-overview-stat {
+    background: rgb(31, 41, 55) !important;
+    border-radius: 0.75rem !important;
+    border: 1px solid rgb(55, 65, 81) !important;
+    padding: 1.5rem !important;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important;
+}
+
+.fi-widget-stats-overview-stat:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+    border-color: rgb(59, 130, 246) !important;
+}
+
+.fi-widget-stats-overview-stat-label {
+    color: rgb(156, 163, 175) !important;
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+}
+
+.fi-widget-stats-overview-stat-value {
+    color: rgb(243, 244, 246) !important;
+    font-size: 1.875rem !important;
+    font-weight: 700 !important;
+    margin-top: 0.5rem !important;
+}
+
+.fi-widget-stats-overview-stat-description {
+    color: rgb(156, 163, 175) !important;
+    font-size: 0.75rem !important;
+    margin-top: 0.5rem !important;
+}
+
+.fi-widget-chart {
+    background: rgb(31, 41, 55) !important;
+    border-radius: 0.75rem !important;
+    border: 1px solid rgb(55, 65, 81) !important;
+    padding: 1.5rem !important;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important;
+}
+
+.fi-widget-chart-header {
+    margin-bottom: 1.5rem !important;
+}
+
+.fi-widget-chart-heading {
+    color: rgb(243, 244, 246) !important;
+    font-size: 1.125rem !important;
+    font-weight: 600 !important;
+}
+
+.fi-widget-chart-description {
+    color: rgb(156, 163, 175) !important;
+    font-size: 0.875rem !important;
+    margin-top: 0.5rem !important;
+}
+
+.fi-widget-table {
+    background: rgb(31, 41, 55) !important;
+    border-radius: 0.75rem !important;
+    border: 1px solid rgb(55, 65, 81) !important;
+    overflow: hidden;
+}
+
+.fi-widget-table-header {
+    background: rgb(31, 41, 55) !important;
+    border-bottom: 1px solid rgb(55, 65, 81) !important;
+    padding: 1rem 1.5rem !important;
+}
+
+.fi-widget-table-heading {
+    color: rgb(243, 244, 246) !important;
+    font-size: 1.125rem !important;
+    font-weight: 600 !important;
+}
+
+.fi-section-content-ctn {
+    gap: 1.5rem !important;
+}
+
+.fi-page {
+    background: rgb(17, 24, 39) !important;
+}
+
+.fi-page-header-heading {
+    color: rgb(243, 244, 246) !important;
+}
+
+.fi-widget-chart canvas {
+    max-height: 300px !important;
+}
+
+.fi-ta-table {
+    background: rgb(31, 41, 55) !important;
+}
+
+.fi-ta-header-cell {
+    color: rgb(156, 163, 175) !important;
+    background: rgb(31, 41, 55) !important;
+}
+
+.fi-ta-cell {
+    color: rgb(243, 244, 246) !important;
+    border-color: rgb(55, 65, 81) !important;
+}
+
+.fi-ta-row:hover {
+    background: rgb(55, 65, 81) !important;
+}
+
+.fi-badge {
+    border-radius: 0.375rem !important;
+    padding: 0.25rem 0.75rem !important;
+    font-size: 0.75rem !important;
+    font-weight: 500 !important;
+}
