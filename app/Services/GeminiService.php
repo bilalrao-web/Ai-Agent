@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class GeminiService
 {
@@ -13,54 +14,67 @@ class GeminiService
      */
     public function generateResponse(string $userQuery, array $contextData = [], array $history = []): string
     {
-        // TEMPORARY: Static response for testing
-        // Real Gemini API call commented out
-        /*
-        $apiKey = config('services.gemini.api_key');
+        $apiKey = 'AIzaSyAf8m01tbqK8Yry9WsV6KR8HXw_ruE6sUo';
+
         if (empty($apiKey)) {
-            return 'Gemini API key is not configured. Please set GEMINI_API_KEY in .env';
+            return 'Gemini API key is not configured.';
         }
-        $model = config('services.gemini.model', 'gemini-2.0-flash');
-        $url = "https://generativelanguage.googleapis.com/v1beta/models/{$model}:generateContent?key={$apiKey}";
-        $systemText = 'You are a customer support AI agent. Be concise, max 2 sentences. Customer data: ' . json_encode($contextData);
-        $contents = [ ['role' => 'user', 'parts' => [['text' => $systemText]] ];
+
+        $model = 'gemini-1.5-flash';
+        $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={$apiKey}";
+
+        $systemText = 'You are a customer support AI agent. Be concise, max 2 sentences. Only answer based on provided customer data. Customer data: ' . json_encode($contextData);
+
+        $contents = [
+            [
+                'role' => 'user',
+                'parts' => [['text' => $systemText]],
+            ],
+            [
+                'role' => 'model',
+                'parts' => [['text' => 'Understood. I will help the customer based on their data.']],
+            ],
+        ];
+
         foreach ($history as $msg) {
             $role = ($msg['role'] ?? '') === 'assistant' ? 'model' : 'user';
-            $contents[] = [ 'role' => $role, 'parts' => [['text' => $msg['content'] ?? '']] ];
+            $contents[] = [
+                'role' => $role,
+                'parts' => [['text' => $msg['content'] ?? '']],
+            ];
         }
-        $contents[] = [ 'role' => 'user', 'parts' => [['text' => $userQuery]] ];
+
+        $contents[] = [
+            'role' => 'user',
+            'parts' => [['text' => $userQuery]],
+        ];
+
         try {
             $response = Http::timeout(30)->post($url, [
                 'contents' => $contents,
-                'generationConfig' => [ 'temperature' => 0.7, 'maxOutputTokens' => 1024 ],
+                'generationConfig' => [
+                    'temperature' => 0.7,
+                    'maxOutputTokens' => 150,
+                ],
             ]);
+
+            Log::info('Gemini API Status: ' . $response->status());
+            Log::info('Gemini API URL: ' . $url);
+            Log::info('Gemini API Response: ' . $response->body());
+
             if (! $response->successful()) {
-                return 'Sorry, the AI service is temporarily unavailable. Please try again later.';
+                Log::error('Gemini API Failed: ' . $response->body());
+                return 'Sorry, the AI service is temporarily unavailable.';
             }
+
             $body = $response->json();
             $text = $body['candidates'][0]['content']['parts'][0]['text'] ?? '';
+
             return trim($text) ?: 'I could not generate a response for that query.';
         } catch (\Throwable $e) {
             report($e);
-            return 'Sorry, an error occurred while processing your request. Please try again later.';
+            return 'Sorry, an error occurred while processing your request.';
         }
-        */
-
-        $query = strtolower($userQuery);
-
-        if (str_contains($query, 'order')) {
-            return 'Your latest order ORD-001 is currently shipped and will arrive tomorrow.';
-        }
-
-        if (str_contains($query, 'ticket')) {
-            return 'Your support ticket is currently open and our team is working on it.';
-        }
-
-        if (str_contains($query, 'hello') || str_contains($query, 'hi')) {
-            return 'Hello! How can I help you today?';
-        }
-
-        return 'Thank you for your query. Our support team will assist you shortly.';
     }
 
     /**
@@ -73,7 +87,7 @@ class GeminiService
             return 'Gemini API key is not configured. Please set GEMINI_API_KEY in .env';
         }
 
-        $model = config('services.gemini.model', 'gemini-2.0-flash');
+        $model = 'gemini-2.5-flash';
         $url = "https://generativelanguage.googleapis.com/v1beta/models/{$model}:generateContent?key={$apiKey}";
 
         $systemInstruction = 'You are a helpful customer support AI assistant. You have access to tools to look up orders, tickets, create tickets, and search FAQ. Use them when the customer asks about their order, ticket, or general questions. Always respond in a friendly, concise way. You are speaking for the company.';

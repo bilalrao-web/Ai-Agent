@@ -1,0 +1,30 @@
+[90m= [39m[34;4mIlluminate\Database\Eloquent\Collection[39;24m {#1632
+    [34mall[39m: [
+      [34;4mApp\Models\Customer[39;24m {#7499
+        [34mid[39m: [35m1[39m,
+        [34mname[39m: "[32mCustomer 1[39m",
+        [34mphone[39m: "[32m+15550000001[39m",
+      },
+      [34;4mApp\Models\Customer[39;24m {#7498
+        [34mid[39m: [35m2[39m,
+        [34mname[39m: "[32mCustomer 2[39m",
+        [34mphone[39m: "[32m+15550000002[39m",
+      },
+      [34;4mApp\Models\Customer[39;24m {#7497
+        [34mid[39m: [35m3[39m,
+        [34mname[39m: "[32mCustomer 3[39m",
+        [34mphone[39m: "[32m+15550000003[39m",
+      },
+      [34;4mApp\Models\Customer[39;24m {#7496
+        [34mid[39m: [35m4[39m,
+        [34mname[39m: "[32mCustomer 4[39m",
+        [34mphone[39m: "[32m+15550000004[39m",
+      },
+      [34;4mApp\Models\Customer[39;24m {#7495
+        [34mid[39m: [35m5[39m,
+        [34mname[39m: "[32mCustomer 5[39m",
+        [34mphone[39m: "[32m+15550000005[39m",
+      },
+    ],
+  }
+

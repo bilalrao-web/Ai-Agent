@@ -32,8 +32,8 @@ return [
     'ai_driver' => env('AI_DRIVER', 'gemini'),
 
     'gemini' => [
-        'api_key' => env('GEMINI_API_KEY'),
-        'model' => env('GEMINI_MODEL', 'gemini-2.0-flash'),
+        'api_key' => 'AIzaSyAf8m01tbqK8Yry9WsV6KR8HXw_ruE6sUo',
+        'model' => 'gemini-2.5-flash',
     ],
 
     'grok' => [
