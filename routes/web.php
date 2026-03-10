@@ -13,11 +13,6 @@ Route::get('/ai-demo', function () {
     return view('ai-demo');
 });
 
-// API: process query (Gemini + tool calling), returns JSON
-Route::get('/test-ai/{queryType}/{customerId}', function (string $queryType, int $customerId, QueryProcessorService $processor) {
-    $result = $processor->process($queryType, $customerId);
-    return response()->json($result);
-});
 
 // Twilio voice webhooks
 Route::prefix('twilio')->name('twilio.')->group(function () {

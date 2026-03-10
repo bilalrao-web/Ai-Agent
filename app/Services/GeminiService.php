@@ -14,7 +14,7 @@ class GeminiService
      */
     public function generateResponse(string $userQuery, array $contextData = [], array $history = []): string
     {
-        $apiKey = 'AIzaSyAf8m01tbqK8Yry9WsV6KR8HXw_ruE6sUo';
+        $apiKey = 'AIzaSyCExBhMchEMNthbHwHXfUyk09O0bmACSPQ';
 
         if (empty($apiKey)) {
             return 'Gemini API key is not configured.';
