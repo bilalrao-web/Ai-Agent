@@ -8,13 +8,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// AI Demo page – dropdown se query select karke Gemini response
-Route::get('/ai-demo', function () {
-    return view('ai-demo');
-});
 
-
-// Twilio voice webhooks
 Route::prefix('twilio')->name('twilio.')->group(function () {
     Route::post('/inbound', [TwilioController::class, 'handleInbound'])->name('inbound');
     Route::match(['get', 'post'], '/process-speech', [TwilioController::class, 'processSpeech'])->name('process-speech');
