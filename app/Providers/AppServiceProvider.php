@@ -34,6 +34,11 @@ class AppServiceProvider extends ServiceProvider
     {
         $customTools = [
             \App\Mcp\Tools\OrderStatus::class,
+            \App\Mcp\Tools\GetLatestOrder::class,
+            \App\Mcp\Tools\GetOrderByNumber::class,
+            \App\Mcp\Tools\GetOpenTickets::class,
+            \App\Mcp\Tools\CreateTicket::class,
+            \App\Mcp\Tools\SearchFaq::class,
         ];
         config(['boost.mcp.tools.include' => array_merge(config('boost.mcp.tools.include', []), $customTools)]);
 
