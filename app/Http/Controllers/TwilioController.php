@@ -87,7 +87,7 @@ class TwilioController extends Controller
 
         $customerIdForTools = $customer?->id ?? 0;
         if ($customerIdForTools > 0) {
-            $executor = new GeminiToolExecutor($customerIdForTools, app(\App\Services\OrderService::class), app(\App\Services\TicketService::class));
+            $executor = app()->make(GeminiToolExecutor::class, ['customerId' => $customerIdForTools]);
             $aiResponse = $this->geminiService->generateWithToolCalling($userSpeech, $customerIdForTools, $executor);
         } else {
             $aiResponse = $this->geminiService->generateResponse($userSpeech, $context, $history);
