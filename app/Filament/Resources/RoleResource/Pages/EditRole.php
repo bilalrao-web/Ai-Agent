@@ -3,42 +3,46 @@
 namespace App\Filament\Resources\RoleResource\Pages;
 
 use App\Filament\Resources\RoleResource;
-use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
-use Illuminate\Database\Eloquent\Model;
+use Filament\Notifications\Notification;
 
 class EditRole extends EditRecord
 {
     protected static string $resource = RoleResource::class;
 
-    protected function getHeaderActions(): array
+    protected function getRedirectUrl(): string
     {
-        return [
-            Actions\DeleteAction::make(),
-        ];
+        return $this->getResource()::getUrl('index');
     }
 
-    protected function mutateFormDataBeforeFill(array $data): array
+    protected function getSavedNotification(): ?Notification
     {
-        $data['permissions'] = $this->record->permissions()->pluck('id')->toArray();
-        return $data;
+        return Notification::make()
+            ->success()
+            ->title('Role updated')
+            ->body('Permissions saved successfully.');
     }
 
-    protected function mutateFormDataBeforeSave(array $data): array
+    protected function afterSave(): void
     {
-        unset($data['permissions']);
-        return $data;
-    }
+        $role = $this->record;
+        $data = $this->form->getState();
 
-    protected function handleRecordUpdate(Model $record, array $data): Model
-    {
-        $record->update($data);
-
-        $permissionIds = $this->form->getState()['permissions'] ?? [];
-        if (is_array($permissionIds)) {
-            $record->syncPermissions($permissionIds);
+        if (in_array($role->name, ['super_admin', 'admin'], true)) {
+            return;
         }
 
-        return $record;
+        $selected = [];
+
+        foreach (RoleResource::moduleGroups() as $moduleName => $modulePerms) {
+            $fieldKey = RoleResource::moduleFieldKey($moduleName);
+            $checked = $data[$fieldKey] ?? [];
+
+            if (is_array($checked)) {
+                $selected = array_merge($selected, $checked);
+            }
+        }
+
+        $role->syncPermissions(array_unique($selected));
     }
 }

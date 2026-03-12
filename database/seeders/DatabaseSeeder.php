@@ -16,6 +16,10 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
+        // Seed core permissions from policy PERMISSIONS constants
+        $this->call(PermissionSeeder::class);
+
+        // Seed role-specific permission assignments (admin, support_agent, customer, etc.)
         $this->call(RoleAndPermissionSeeder::class);
 
         // 3 admin users (no customer record)

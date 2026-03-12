@@ -85,4 +85,9 @@ class OrderResource extends Resource
     {
         return auth()->user()?->can('viewAny', static::getModel()) ?? false;
     }
+
+    public static function canViewAny(): bool
+    {
+        return auth()->user()?->can('view_any_orders') ?? false;
+    }
 }

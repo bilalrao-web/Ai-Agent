@@ -72,7 +72,9 @@ class RoleAndPermissionSeeder extends Seeder
         $superAdmin->syncPermissions(Permission::all());
 
         $admin = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
-        $admin->syncPermissions($allResourcePermissions);
+        // Admin gets ALL permissions (same as super_admin, but super_admin bypasses via Gate::before)
+        // This ensures admin can access all resources in the admin panel
+        $admin->syncPermissions(Permission::all());
 
         $supportAgent = Role::firstOrCreate(['name' => 'support_agent', 'guard_name' => 'web']);
         $supportAgent->syncPermissions([
@@ -81,6 +83,16 @@ class RoleAndPermissionSeeder extends Seeder
         ]);
 
         $customer = Role::firstOrCreate(['name' => 'customer', 'guard_name' => 'web']);
-        $customer->syncPermissions(['view_own_tickets', 'view_own_orders', 'view_own_calls']);
+        // Default portal module permissions (super admin can toggle via RoleResource)
+        $customer->syncPermissions([
+            'view_any_calls',      // ✅ My Call History (ON by default)
+            'view_call',
+            'view_any_orders',     // ✅ My Orders (ON by default)
+            'view_order',
+            'view_any_tickets',    // ✅ My Tickets (ON by default)
+            'view_ticket',
+            'create_ticket',
+            // 'view_any_faqs'     // ❌ FAQs (OFF by default — super admin enables via RoleResource)
+        ]);
     }
 }
