@@ -29,7 +29,6 @@ class PermissionSeeder extends Seeder
 
     public function run(): void
     {
-        // 1. Create all permissions from policy constants
         foreach ($this->policies as $policy) {
             foreach ($policy::PERMISSIONS as $perm) {
                 Permission::firstOrCreate(
@@ -38,27 +37,22 @@ class PermissionSeeder extends Seeder
             }
         }
 
-        // 2. Create additional management permissions (used in Filament resources)
         Permission::firstOrCreate(['name' => 'manage_roles', 'guard_name' => 'web']);
         Permission::firstOrCreate(['name' => 'manage_permissions', 'guard_name' => 'web']);
 
-        // 3. Create Super Admin role + give ALL permissions
         $superAdmin = Role::firstOrCreate(['name' => 'super_admin', 'guard_name' => 'web']);
         $superAdmin->syncPermissions(Permission::all());
 
-        // 4. Create Customer role with DEFAULT portal access
         $customerRole = Role::firstOrCreate(['name' => 'customer', 'guard_name' => 'web']);
 
-        // Default: give customer these portal modules (ON by default)
         $defaultCustomerPermissions = [
-            'view_any_tickets',   // ✅ ON by default
+            'view_any_tickets',
             'create_ticket',
             'view_ticket',
-            'view_any_orders',    // ✅ ON by default
+            'view_any_orders',
             'view_order',
-            'view_any_calls',     // ✅ ON by default
+            'view_any_calls',
             'view_call',
-            // 'view_any_faqs'    // ❌ OFF by default — super admin enables it
         ];
 
         $customerRole->syncPermissions($defaultCustomerPermissions);

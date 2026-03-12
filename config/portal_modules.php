@@ -1,15 +1,12 @@
 <?php
 
-// Every module that CAN appear in the customer portal
-// Super admin controls visibility by giving/removing 'view_any_*' permission to customer role
-
 return [
     [
         'key' => 'call_history',
         'label' => 'My Call History',
         'icon' => 'heroicon-o-phone',
         'route' => 'portal.calls.index',
-        'permission' => 'view_any_calls',  // must have this to see in nav
+        'permission' => 'view_any_calls',
     ],
     [
         'key' => 'orders',
@@ -30,7 +27,6 @@ return [
         'label' => 'FAQs',
         'icon' => 'heroicon-o-question-mark-circle',
         'route' => 'portal.faqs.index',
-        'permission' => 'view_any_faqs',  // super admin toggles this ON/OFF
+        'permission' => 'view_any_faqs',
     ],
-    // Add more portal modules here in future
 ];
