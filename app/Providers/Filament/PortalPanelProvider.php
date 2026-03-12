@@ -35,8 +35,9 @@ class PortalPanelProvider extends PanelProvider
                 \App\Filament\Portal\Resources\MyOrderResource::class,
                 \App\Filament\Portal\Resources\MyTicketResource::class,
                 \App\Filament\Portal\Resources\FaqResource::class,
-                \App\Filament\Portal\Resources\RoleResource::class,        // ✅ Read-only roles
-                \App\Filament\Portal\Resources\PermissionResource::class,  // ✅ Read-only permissions
+                \App\Filament\Portal\Resources\RoleResource::class,       
+                \App\Filament\Portal\Resources\PermissionResource::class,
+                \App\Filament\Portal\Resources\UserResource::class,
             ])
             ->discoverPages(in: app_path('Filament/Portal/Pages'), for: 'App\\Filament\\Portal\\Pages')
             ->pages([
