@@ -10,6 +10,8 @@ class CreateRole extends CreateRecord
 {
     protected static string $resource = RoleResource::class;
 
+    protected array $selectedPermissions = [];
+
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');
@@ -23,19 +25,35 @@ class CreateRole extends CreateRecord
             ->body('Permissions saved successfully.');
     }
 
-    protected function afterCreate(): void
+    protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $role = $this->record;
-        $data = $this->form->getState();
-
         $selected = [];
 
         foreach (RoleResource::moduleGroups() as $moduleName => $modulePerms) {
             $fieldKey = RoleResource::moduleFieldKey($moduleName);
             $checked = $data[$fieldKey] ?? [];
-            $selected = array_merge($selected, $checked);
+
+            if (is_array($checked)) {
+                $selected = array_merge($selected, $checked);
+            }
         }
 
-        $role->syncPermissions(array_unique($selected));
+        $this->selectedPermissions = array_unique($selected);
+
+        foreach (RoleResource::moduleGroups() as $moduleName => $modulePerms) {
+            $fieldKey = RoleResource::moduleFieldKey($moduleName);
+            unset($data[$fieldKey]);
+        }
+
+        return $data;
+    }
+
+    protected function afterCreate(): void
+    {
+        $role = $this->record;
+        
+        if (!empty($this->selectedPermissions)) {
+            $role->syncPermissions($this->selectedPermissions);
+        }
     }
 }

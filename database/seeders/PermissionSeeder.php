@@ -31,29 +31,50 @@ class PermissionSeeder extends Seeder
     {
         foreach ($this->policies as $policy) {
             foreach ($policy::PERMISSIONS as $perm) {
-                Permission::firstOrCreate(
+                Permission::updateOrCreate(
+                    ['name' => $perm['name'], 'guard_name' => $perm['type']->value],
                     ['name' => $perm['name'], 'guard_name' => $perm['type']->value]
                 );
             }
         }
 
-        Permission::firstOrCreate(['name' => 'manage_roles', 'guard_name' => 'web']);
-        Permission::firstOrCreate(['name' => 'manage_permissions', 'guard_name' => 'web']);
+        Permission::updateOrCreate(
+            ['name' => 'manage_roles', 'guard_name' => 'web'],
+            ['name' => 'manage_roles', 'guard_name' => 'web']
+        );
+        Permission::updateOrCreate(
+            ['name' => 'manage_permissions', 'guard_name' => 'web'],
+            ['name' => 'manage_permissions', 'guard_name' => 'web']
+        );
 
-        $superAdmin = Role::firstOrCreate(['name' => 'super_admin', 'guard_name' => 'web']);
+        $superAdmin = Role::updateOrCreate(
+            ['name' => 'super_admin', 'guard_name' => 'web'],
+            ['name' => 'super_admin', 'guard_name' => 'web']
+        );
         $superAdmin->syncPermissions(Permission::all());
 
-        $customerRole = Role::firstOrCreate(['name' => 'customer', 'guard_name' => 'web']);
+        $customerRole = Role::updateOrCreate(
+            ['name' => 'customer', 'guard_name' => 'web'],
+            ['name' => 'customer', 'guard_name' => 'web']
+        );
 
-        $defaultCustomerPermissions = [
-            'view_any_tickets',
-            'create_ticket',
-            'view_ticket',
-            'view_any_orders',
-            'view_order',
-            'view_any_calls',
-            'view_call',
-        ];
+        $defaultCustomerPermissions = [];
+        
+        foreach ([TicketPolicy::class, OrderPolicy::class, CallLogPolicy::class] as $policy) {
+            foreach ($policy::PERMISSIONS as $perm) {
+                if (in_array($perm['name'], [
+                    'view_any_tickets',
+                    'create_ticket',
+                    'view_ticket',
+                    'view_any_orders',
+                    'view_order',
+                    'view_any_calls',
+                    'view_call',
+                ])) {
+                    $defaultCustomerPermissions[] = $perm['name'];
+                }
+            }
+        }
 
         $customerRole->syncPermissions($defaultCustomerPermissions);
     }

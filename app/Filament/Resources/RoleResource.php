@@ -3,6 +3,15 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\RoleResource\Pages;
+use App\Policies\CallLogPolicy;
+use App\Policies\CustomerPolicy;
+use App\Policies\OrderPolicy;
+use App\Policies\TicketPolicy;
+use App\Policies\UserPolicy;
+use App\Policies\RolePolicy;
+use App\Policies\PermissionPolicy;
+use App\Policies\FaqPolicy;
+use App\Enums\PermissionTypeEnum;
 use Illuminate\Support\Str;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -27,75 +36,45 @@ class RoleResource extends Resource
     /**
      * Group permissions by module for a Propday-style UI.
      *
+     * Permissions are dynamically extracted from policy classes.
      * Each key is a human-friendly module name, and the value is
      * an array of permission names that belong to that module.
      */
     public static function moduleGroups(): array
     {
-        return [
-            'Customers' => [
-                'view_any_customers',
-                'view_customer',
-                'create_customer',
-                'update_customer',
-                'delete_customer',
-                'force_delete_customer',
-            ],
-            'Orders' => [
-                'view_any_orders',
-                'view_order',
-                'create_order',
-                'update_order',
-                'delete_order',
-                'force_delete_order',
-            ],
-            'Tickets' => [
-                'view_any_tickets',
-                'view_ticket',
-                'create_ticket',
-                'update_ticket',
-                'delete_ticket',
-                'force_delete_ticket',
-                'view_own_tickets',
-            ],
-            'Call Logs' => [
-                'view_any_calls',
-                'view_call',
-                'view_own_calls',
-            ],
-            'FAQs' => [
-                'view_any_faqs',
-                'view_faq',
-                'create_faq',
-                'update_faq',
-                'delete_faq',
-                'force_delete_faq',
-            ],
-            'Users' => [
-                'view_any_users',
-                'view_user',
-                'create_user',
-                'update_user',
-                'delete_user',
-                'force_delete_user',
-            ],
-            'Roles' => [
-                'view_any_roles',
-                'view_role',
-                'create_role',
-                'update_role',
-                'delete_role',
-                'manage_roles',
-            ],
-            'Permissions' => [
-                'view_any_permissions',
-                'view_permission',
-                'create_permission',
-                'update_permission',
-                'delete_permission',
-                'manage_permissions',
-            ],
+        $groups = [];
+        
+        $policyMap = [
+            'Customers' => CustomerPolicy::class,
+            'Orders' => OrderPolicy::class,
+            'Tickets' => TicketPolicy::class,
+            'Call Logs' => CallLogPolicy::class,
+            'FAQs' => FaqPolicy::class,
+            'Users' => UserPolicy::class,
+            'Roles' => RolePolicy::class,
+            'Permissions' => PermissionPolicy::class,
         ];
+
+        foreach ($policyMap as $moduleName => $policyClass) {
+            $permissions = [];
+            
+            foreach ($policyClass::PERMISSIONS as $perm) {
+                if ($perm['type'] === PermissionTypeEnum::WEB) {
+                    $permissions[] = $perm['name'];
+                }
+            }
+            
+            $groups[$moduleName] = $permissions;
+        }
+
+        $groups['Tickets'][] = 'view_own_tickets';
+        $groups['Call Logs'][] = 'view_own_calls';
+        $groups['Orders'][] = 'view_own_orders';
+        
+        $groups['Roles'][] = 'manage_roles';
+        $groups['Permissions'][] = 'manage_permissions';
+
+        return $groups;
     }
 
     /**
@@ -131,6 +110,7 @@ class RoleResource extends Resource
                         ->gridDirection('row')
                         ->bulkToggleable()
                         ->default([])
+                        ->dehydrated(false)
                         ->afterStateHydrated(function (CheckboxList $component, ?Role $record) use ($options): void {
                             if (! $record) {
                                 $component->state([]);
