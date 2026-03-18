@@ -14,14 +14,17 @@ class GeminiService
      */
     public function generateResponse(string $userQuery, array $contextData = [], array $history = []): string
     {
-        $apiKey = 'AIzaSyCExBhMchEMNthbHwHXfUyk09O0bmACSPQ';
+        // Pull the key and model dynamically from the .env file
+        $apiKey = config('services.gemini.api_key');
+        $modelName = config('services.gemini.model');
 
         if (empty($apiKey)) {
+            Log::error('Gemini API key is not configured.');
             return 'Gemini API key is not configured.';
         }
 
-        $model = 'gemini-1.5-flash';
-        $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={$apiKey}";
+        // Insert the correct model name into the URL
+        $url = "https://generativelanguage.googleapis.com/v1beta/models/{$modelName}:generateContent?key={$apiKey}";
 
         $systemText = 'You are a customer support AI agent. Be concise, max 2 sentences. Only answer based on provided customer data. Customer data: ' . json_encode($contextData);
 
@@ -50,7 +53,7 @@ class GeminiService
         ];
 
         try {
-            $response = Http::timeout(30)->post($url, [
+            $response = Http::withoutVerifying()->timeout(30)->post($url, [
                 'contents' => $contents,
                 'generationConfig' => [
                     'temperature' => 0.7,
@@ -82,13 +85,17 @@ class GeminiService
      */
     public function generateWithToolCalling(string $userQuery, int $customerId, GeminiToolExecutor $executor): string
     {
+        // Pull the key and model dynamically from the .env file
         $apiKey = config('services.gemini.api_key');
+        $modelName = config('services.gemini.model');
+
         if (empty($apiKey)) {
+            Log::error('Gemini API key is not configured.');
             return 'Gemini API key is not configured. Please set GEMINI_API_KEY in .env';
         }
 
-        $model = 'gemini-2.5-flash';
-        $url = "https://generativelanguage.googleapis.com/v1beta/models/{$model}:generateContent?key={$apiKey}";
+        // Insert the correct model name into the URL
+        $url = "https://generativelanguage.googleapis.com/v1beta/models/{$modelName}:generateContent?key={$apiKey}";
 
         $systemInstruction = 'You are a helpful customer support AI assistant. You have access to tools to look up orders, tickets, create tickets, and search FAQ. Use them when the customer asks about their order, ticket, or general questions. Always respond in a friendly, concise way. You are speaking for the company.';
 
@@ -115,6 +122,7 @@ class GeminiService
                     'parts' => [['text' => $systemInstruction]],
                 ],
             ];
+            
             if ($round === 1) {
                 $payload['tools'] = $tools;
             }
