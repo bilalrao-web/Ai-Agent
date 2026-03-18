@@ -1,0 +1,524 @@
+/* Premium Dark SaaS Dashboard Styles - LEGO Inspired */
+
+/* Global Dark Theme Background - Premium */
+.fi-body {
+    background-color: #0f0f0f !important;
+    color: rgba(255, 255, 255, 0.95) !important;
+    font-family: 'Plus Jakarta Sans', 'DM Sans', sans-serif !important;
+    overflow-y: auto !important;
+    height: 100vh !important;
+}
+
+.fi-main {
+    overflow-y: auto !important;
+}
+
+/* Premium Dark SaaS Widget Styles */
+.glassmorphism-widget {
+    background: #1a1a1f !important;
+    border: 1px solid #2a2a35 !important;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    padding: 1.5rem !important;
+}
+
+.glassmorphism-widget:hover {
+    transform: scale(1.01) !important;
+    border-color: #3b82f6 !important;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Filament Card Styles - Premium Dark */
+.fi-section {
+    background: #1a1a1f !important;
+    border: 1px solid #2a2a35 !important;
+    border-radius: 16px !important;
+    border-bottom: 1px solid #2a2a35 !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.fi-section:hover {
+    transform: scale(1.01) !important;
+    border-color: #3b82f6 !important;
+}
+
+/* ========== DASHBOARD LAYOUT - NATURAL SCROLLING ========== */
+
+/* Premium Dashboard Page */
+.fi-page {
+    padding: 1.5rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+/* Premium Dashboard Grid - Compact One-Screen Layout */
+/* Force table cards to match donut card height in same row */
+.fi-dashboard-widgets {
+    display: grid !important;
+    grid-template-columns: repeat(12, 1fr) !important;
+    gap: 0.75rem !important;
+    padding: 1rem 1.5rem !important;
+    align-content: start !important;
+    align-items: stretch !important;
+    grid-auto-rows: auto !important;
+}
+
+/* Every grid cell stretches full row height */
+.fi-dashboard-widgets > div {
+    display: flex !important;
+    flex-direction: column !important;
+    align-self: stretch !important;
+}
+
+/* fi-section (the card) fills the cell */
+.fi-dashboard-widgets > div > .fi-section,
+.fi-dashboard-widgets > div > div > .fi-section {
+    height: 100% !important;
+    flex: 1 !important;
+}
+
+/* Premium Stats Widgets - Compact */
+.fi-stats-overview-widget {
+    min-height: 100px !important;
+    max-height: 120px !important;
+    padding: 1.25rem !important;
+}
+
+/* Ensure stat cards container uses grid with equal widths */
+.fi-stats-overview-widget > div {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 1rem !important;
+    width: 100% !important;
+}
+
+.fi-stats-overview-widget .fi-stat {
+    padding: 1.25rem !important;
+    min-height: 110px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    background: #1a1a1f !important;
+    border: 1px solid #2a2a35 !important;
+    border-radius: 16px !important;
+    border-bottom: 2px solid transparent !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    width: 100% !important;
+}
+
+/* Tighter stat cards - colored bottom borders */
+.fi-stats-overview-widget .fi-stat:nth-child(1) { 
+    border-bottom-color: #3b82f6 !important; 
+}
+.fi-stats-overview-widget .fi-stat:nth-child(2) { 
+    border-bottom-color: #22c55e !important; 
+}
+.fi-stats-overview-widget .fi-stat:nth-child(3) { 
+    border-bottom-color: #f59e0b !important; 
+}
+.fi-stats-overview-widget .fi-stat:nth-child(4) { 
+    border-bottom-color: #8b5cf6 !important; 
+}
+
+.fi-stats-overview-widget .fi-stat:hover {
+    transform: scale(1.01) !important;
+    border-color: #3b82f6 !important;
+}
+
+.fi-stats-overview-widget .fi-stat-value {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 1.75rem !important;
+    line-height: 1.2 !important;
+    font-weight: 700 !important;
+    margin-bottom: 0.375rem !important;
+    color: rgba(255, 255, 255, 1) !important;
+    letter-spacing: -0.02em !important;
+}
+
+.fi-stats-overview-widget .fi-stat-label {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 0.75rem !important;
+    margin-bottom: 0.5rem !important;
+    color: rgba(255, 255, 255, 0.6) !important;
+    font-weight: 500 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+}
+
+.fi-stats-overview-widget .fi-stat-description {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 0.7rem !important;
+    margin-top: 0.25rem !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.375rem !important;
+    font-weight: 600 !important;
+}
+
+.fi-stats-overview-widget .fi-stat-description[style*="color: rgb(34, 197, 94)"] {
+    color: #22c55e !important;
+}
+
+.fi-stats-overview-widget .fi-stat-description[style*="color: rgb(239, 68, 68)"] {
+    color: #ef4444 !important;
+}
+
+.fi-stats-overview-widget .fi-stat-chart {
+    height: 24px !important;
+    margin-top: 0.375rem !important;
+    min-height: 24px !important;
+}
+
+/* Sparkline Gradient for Positive Trends */
+.fi-stats-overview-widget .fi-stat[data-color="success"] .fi-stat-chart canvas,
+.fi-stats-overview-widget .fi-stat .fi-stat-chart canvas {
+    filter: drop-shadow(0 0 2px rgba(59, 130, 246, 0.2)) !important;
+}
+
+/* Both cards in rows 4 and 5 — same fixed height */
+.fi-table-widget,
+.fi-chart-widget {
+    min-height: 360px !important;
+}
+
+/* Premium Chart Widgets - Controlled Height */
+.fi-chart-widget {
+    padding: 1.5rem !important;
+    flex: 1 !important;
+    height: 100% !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    background: #1a1a1f !important;
+    border: 1px solid #2a2a35 !important;
+    border-radius: 16px !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.fi-chart-widget:hover {
+    transform: scale(1.01) !important;
+    border-color: #3b82f6 !important;
+}
+
+/* Card title styling */
+.fi-section-header-heading, .fi-widget-heading {
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+    color: rgba(255,255,255,0.6) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.08em !important;
+}
+
+.fi-chart-widget .fi-section-header-heading {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 0.85rem !important;
+    margin-bottom: 1rem !important;
+    flex-shrink: 0 !important;
+    font-weight: 600 !important;
+    color: rgba(255,255,255,0.6) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.08em !important;
+}
+
+/* Chart widget inner content stretches */
+.fi-chart-widget .fi-section-content {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+/* Chart canvas takes available space */
+.fi-chart-widget > div:last-child {
+    flex: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 0 !important;
+}
+
+/* Canvas fills available space */
+.fi-chart-widget canvas {
+    flex: 1 !important;
+    width: 100% !important;
+    min-height: 240px !important;
+    max-height: 260px !important;
+    height: 100% !important;
+}
+
+/* Revenue trend chart - compact */
+.fi-dashboard-widgets > div:has(.fi-chart-widget:not([class*="doughnut"])) canvas {
+    max-height: 160px !important;
+}
+
+/* Premium Table Widgets - let them define the row height */
+.fi-table-widget {
+    padding: 1.5rem !important;
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+    background: #1a1a1f !important;
+    border: 1px solid #2a2a35 !important;
+    border-radius: 16px !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Table inside card fills card height */
+.fi-table-widget,
+.fi-table-widget .fi-section-content,
+.fi-table-widget .fi-ta,
+.fi-table-widget .fi-ta-content {
+    height: 100% !important;
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+/* Table container fills remaining space */
+.fi-table-widget .fi-ta-table-container {
+    flex: 1 !important;
+    overflow-y: auto !important;
+}
+
+.fi-table-widget:hover {
+    transform: scale(1.01) !important;
+    border-color: #3b82f6 !important;
+}
+
+.fi-table-widget .fi-section-header-heading {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 0.85rem !important;
+    margin-bottom: 1rem !important;
+    flex-shrink: 0 !important;
+    font-weight: 600 !important;
+    color: rgba(255,255,255,0.6) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.08em !important;
+}
+
+
+
+.fi-table-widget .fi-ta-table {
+    font-size: 0.875rem !important;
+}
+
+.fi-table-widget .fi-ta-table thead th {
+    padding: 0.75rem 1rem !important;
+    font-size: 0.75rem !important;
+    position: sticky !important;
+    top: 0 !important;
+    background: #18181c !important;
+    z-index: 5 !important;
+    font-weight: 600 !important;
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    border-bottom: 1px solid #2a2a35 !important;
+}
+
+.fi-table-widget .fi-ta-table tbody td {
+    padding: 0.75rem 1rem !important;
+    font-size: 0.875rem !important;
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.fi-table-widget .fi-ta-table tbody tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.02) !important;
+}
+
+.fi-table-widget .fi-ta-table tbody tr:hover {
+    background: rgba(59, 130, 246, 0.1) !important;
+}
+
+/* Recent calls table - premium dark hover */
+.fi-ta-table tbody tr:hover td {
+    background: rgba(59, 130, 246, 0.08) !important;
+}
+
+/* Premium Scrollbars - Thin & Subtle */
+.fi-table-widget .fi-ta-table-container::-webkit-scrollbar {
+    width: 4px !important;
+    height: 4px !important;
+}
+
+.fi-table-widget .fi-ta-table-container::-webkit-scrollbar-track {
+    background: #18181c !important;
+    border-radius: 2px !important;
+}
+
+.fi-table-widget .fi-ta-table-container::-webkit-scrollbar-thumb {
+    background: #3b82f6 !important;
+    border-radius: 2px !important;
+    opacity: 0.5 !important;
+}
+
+.fi-table-widget .fi-ta-table-container::-webkit-scrollbar-thumb:hover {
+    background: #3b82f6 !important;
+    opacity: 0.8 !important;
+}
+
+/* Force Stats Widget Heights - Flexible */
+.fi-dashboard-widgets > div:has(.fi-stats-overview-widget) {
+    min-height: 110px !important;
+    height: auto !important;
+}
+
+
+/* Make right-side charts same height as left tables */
+
+/* Premium Sidebar Styles */
+.fi-sidebar {
+    background: #18181c !important;
+    border-right: 1px solid #2a2a35 !important;
+}
+
+.fi-sidebar-nav-item {
+    color: rgba(255, 255, 255, 0.7) !important;
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    font-weight: 500 !important;
+    border-radius: 8px !important;
+    margin: 0.25rem 0.5rem !important;
+}
+
+.fi-sidebar-nav-item:hover {
+    background: rgba(59, 130, 246, 0.1) !important;
+    color: #3b82f6 !important;
+}
+
+.fi-sidebar-nav-item-active {
+    background: rgba(59, 130, 246, 0.15) !important;
+    color: #3b82f6 !important;
+    border-left: 3px solid #3b82f6 !important;
+    font-weight: 600 !important;
+}
+
+/* Premium Topbar Styles */
+.fi-topbar {
+    background: #18181c !important;
+    border-bottom: 1px solid #2a2a35 !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+}
+
+/* Premium Badge Styles */
+.fi-badge {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-weight: 600 !important;
+    font-size: 0.75rem !important;
+    padding: 0.25rem 0.625rem !important;
+    border-radius: 6px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+}
+
+.fi-badge-success,
+.fi-badge[style*="background-color: rgb(34, 197, 94)"] {
+    background: rgba(34, 197, 94, 0.15) !important;
+    color: #22c55e !important;
+    border: 1px solid rgba(34, 197, 94, 0.3) !important;
+}
+
+.fi-badge-warning,
+.fi-badge[style*="background-color: rgb(251, 191, 36)"] {
+    background: rgba(251, 191, 36, 0.15) !important;
+    color: #fbbf24 !important;
+    border: 1px solid rgba(251, 191, 36, 0.3) !important;
+}
+
+.fi-badge-danger,
+.fi-badge[style*="background-color: rgb(239, 68, 68)"] {
+    background: rgba(239, 68, 68, 0.15) !important;
+    color: #ef4444 !important;
+    border: 1px solid rgba(239, 68, 68, 0.3) !important;
+}
+
+.fi-badge-info,
+.fi-badge[style*="background-color: rgb(59, 130, 246)"] {
+    background: rgba(59, 130, 246, 0.15) !important;
+    color: #3b82f6 !important;
+    border: 1px solid rgba(59, 130, 246, 0.3) !important;
+}
+
+/* Status badge colors for tables */
+.fi-badge-color-success { 
+    background: rgba(34,197,94,0.15) !important; 
+    color: #22c55e !important;
+    border: 1px solid rgba(34,197,94,0.3) !important;
+}
+.fi-badge-color-danger { 
+    background: rgba(239,68,68,0.15) !important; 
+    color: #ef4444 !important;
+    border: 1px solid rgba(239,68,68,0.3) !important;
+}
+.fi-badge-color-warning { 
+    background: rgba(245,158,11,0.15) !important; 
+    color: #f59e0b !important;
+    border: 1px solid rgba(245,158,11,0.3) !important;
+}
+.fi-badge-color-info { 
+    background: rgba(59,130,246,0.15) !important; 
+    color: #3b82f6 !important;
+    border: 1px solid rgba(59,130,246,0.3) !important;
+}
+
+/* Premium Global Scrollbar Styles */
+::-webkit-scrollbar {
+    width: 6px !important;
+    height: 6px !important;
+}
+
+::-webkit-scrollbar-track {
+    background: #18181c !important;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #3b82f6 !important;
+    border-radius: 3px !important;
+    opacity: 0.5 !important;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #3b82f6 !important;
+    opacity: 0.8 !important;
+}
+
+/* Icon Column Styling */
+.fi-icon-column .fi-icon {
+    filter: drop-shadow(0 0 3px rgba(59, 130, 246, 0.3)) !important;
+}
+
+/* Input & Form Elements */
+.fi-input {
+    background: #18181c !important;
+    border: 1px solid #2a2a35 !important;
+    color: rgba(255, 255, 255, 0.95) !important;
+    border-radius: 8px !important;
+}
+
+.fi-input:focus {
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .glassmorphism-widget {
+        border-radius: 12px !important;
+        padding: 1rem !important;
+    }
+    
+    .fi-stats-overview-widget .fi-stat-value {
+        font-size: 1.25rem !important;
+    }
+    
+    .fi-dashboard-widgets {
+        gap: 0.75rem !important;
+        padding: 1rem !important;
+    }
+}
