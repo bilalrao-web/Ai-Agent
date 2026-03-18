@@ -3,10 +3,13 @@
 namespace App\Filament\Widgets;
 
 use App\Models\CallLog;
+use App\Filament\Traits\ChartOptionsTrait;
 use Filament\Widgets\ChartWidget;
 
 class CallOutcomeSummaryWidget extends ChartWidget
 {
+    use ChartOptionsTrait;
+
     protected static ?string $heading = 'Call Outcome Summary';
     
     protected static ?int $sort = 9;
@@ -55,6 +58,8 @@ class CallOutcomeSummaryWidget extends ChartWidget
 
     protected function getOptions(): array
     {
+        $textColor = $this->getChartTextColor();
+
         return [
             'maintainAspectRatio' => false,
             'responsive' => true,
@@ -66,12 +71,14 @@ class CallOutcomeSummaryWidget extends ChartWidget
                 'legend' => [
                     'position' => 'bottom',
                     'labels' => [
-                        'color' => 'rgba(255,255,255,0.7)',
-                        'padding' => 20,
-                        'font' => ['size' => 11],
+                        'color' => $textColor,
+                        'padding' => 16,
+                        'font' => ['size' => 11, 'family' => "'DM Sans', sans-serif"],
                         'usePointStyle' => true,
+                        'pointStyleWidth' => 8,
                     ],
                 ],
+                'tooltip' => $this->getChartTooltipOptions(),
             ],
             'scales' => [
                 'x' => ['display' => false],

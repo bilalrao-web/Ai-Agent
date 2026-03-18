@@ -3,11 +3,14 @@
 namespace App\Filament\Widgets;
 
 use App\Models\CallLog;
+use App\Filament\Traits\ChartOptionsTrait;
 use Filament\Widgets\ChartWidget;
 use Illuminate\Support\Carbon;
 
 class CallTrafficWidget extends ChartWidget
 {
+    use ChartOptionsTrait;
+
     protected static ?string $heading = 'Call Traffic Overview';
     
     protected static ?int $sort = 6;
@@ -54,18 +57,15 @@ class CallTrafficWidget extends ChartWidget
 
     protected function getOptions(): array
     {
+        $mutedColor = $this->getChartMutedColor();
+        $gridColor = $this->getChartGridColor();
+
         return [
             'plugins' => [
                 'legend' => [
                     'display' => false,
                 ],
-                'tooltip' => [
-                    'backgroundColor' => 'rgba(17, 24, 39, 0.9)',
-                    'titleColor' => 'rgba(255, 255, 255, 0.9)',
-                    'bodyColor' => 'rgba(255, 255, 255, 0.7)',
-                    'borderColor' => 'rgba(255, 255, 255, 0.1)',
-                    'borderWidth' => 1,
-                ],
+                'tooltip' => $this->getChartTooltipOptions(),
             ],
             'scales' => [
                 'x' => [
@@ -73,7 +73,7 @@ class CallTrafficWidget extends ChartWidget
                         'display' => false,
                     ],
                     'ticks' => [
-                        'color' => 'rgba(255, 255, 255, 0.5)',
+                        'color' => $mutedColor,
                         'font' => [
                             'family' => "'DM Sans', sans-serif",
                             'size' => 11,
@@ -85,11 +85,11 @@ class CallTrafficWidget extends ChartWidget
                 ],
                 'y' => [
                     'grid' => [
-                        'color' => 'rgba(255, 255, 255, 0.03)',
+                        'color' => $gridColor,
                         'drawBorder' => false,
                     ],
                     'ticks' => [
-                        'color' => 'rgba(255, 255, 255, 0.5)',
+                        'color' => $mutedColor,
                         'font' => [
                             'family' => "'DM Sans', sans-serif",
                             'size' => 11,

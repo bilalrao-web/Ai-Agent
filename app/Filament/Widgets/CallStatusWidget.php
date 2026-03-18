@@ -3,11 +3,14 @@
 namespace App\Filament\Widgets;
 
 use App\Models\CallLog;
+use App\Filament\Traits\ChartOptionsTrait;
 use Filament\Widgets\ChartWidget;
 use Illuminate\Support\Carbon;
 
 class CallStatusWidget extends ChartWidget
 {
+    use ChartOptionsTrait;
+
     protected static ?string $heading = 'Call Status Distribution';
     
     protected static ?int $sort = 7;
@@ -52,12 +55,14 @@ class CallStatusWidget extends ChartWidget
 
     protected function getOptions(): array
     {
+        $textColor = $this->getChartTextColor();
+
         return [
             'plugins' => [
                 'legend' => [
                     'position' => 'bottom',
                     'labels' => [
-                        'color' => 'rgba(255, 255, 255, 0.8)',
+                        'color' => $textColor,
                         'font' => [
                             'family' => "'DM Sans', sans-serif",
                         ],
@@ -65,13 +70,11 @@ class CallStatusWidget extends ChartWidget
                         'usePointStyle' => true,
                     ],
                 ],
-                'tooltip' => [
-                    'backgroundColor' => 'rgba(17, 24, 39, 0.9)',
-                    'titleColor' => 'rgba(255, 255, 255, 0.9)',
-                    'bodyColor' => 'rgba(255, 255, 255, 0.7)',
-                    'borderColor' => 'rgba(255, 255, 255, 0.1)',
-                    'borderWidth' => 1,
-                ],
+                'tooltip' => $this->getChartTooltipOptions(),
+            ],
+            'scales' => [
+                'x' => ['display' => false],
+                'y' => ['display' => false],
             ],
         ];
     }
