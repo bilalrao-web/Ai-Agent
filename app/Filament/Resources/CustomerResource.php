@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\CustomerResource\Pages;
 use App\Models\Customer;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -22,8 +23,10 @@ class CustomerResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('user_id')
-                    ->relationship('user', 'name')
+                    ->label('User')
+                    ->options(fn () => User::query()->orderBy('name')->pluck('name', 'id'))
                     ->searchable()
+                    ->preload()
                     ->nullable(),
                 Forms\Components\TextInput::make('name')->required()->maxLength(255),
                 Forms\Components\TextInput::make('phone')->tel()->required()->unique(ignoreRecord: true),
@@ -72,5 +75,10 @@ class CustomerResource extends Resource
     public static function canAccess(): bool
     {
         return auth()->user()?->can('viewAny', static::getModel()) ?? false;
+    }
+
+    public static function canViewAny(): bool
+    {
+        return auth()->user()?->can('view_any_customers') ?? false;
     }
 }

@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\TicketResource\Pages;
 use App\Models\Ticket;
+use App\Models\Customer;
 use App\Rules\TicketStatusRule;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -23,8 +24,10 @@ class TicketResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('customer_id')
-                    ->relationship('customer', 'name')
+                    ->label('Customer')
+                    ->options(fn () => Customer::query()->orderBy('name')->pluck('name', 'id'))
                     ->searchable()
+                    ->preload()
                     ->required(),
                 Forms\Components\TextInput::make('issue_type')->required()->maxLength(255),
                 Forms\Components\Textarea::make('description')->required()->columnSpanFull(),
@@ -79,6 +82,11 @@ class TicketResource extends Resource
     }
 
     public static function canAccess(): bool
+    {
+        return auth()->user()?->can('viewAny', static::getModel()) ?? false;
+    }
+
+    public static function canViewAny(): bool
     {
         return auth()->user()?->can('viewAny', static::getModel()) ?? false;
     }

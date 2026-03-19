@@ -49,7 +49,6 @@ class TwilioController extends Controller
         $callLogId = session('call_log_id');
         $customerId = session('customer_id');
 
-        // If session not found, use latest call log (for testing purposes only)
         if (! $callLogId) {
             $latestLog = \App\Models\CallLog::latest()->first();
             $callLogId = $latestLog?->id;

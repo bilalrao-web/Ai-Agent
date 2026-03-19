@@ -51,6 +51,11 @@ class MyCallHistoryResource extends Resource
         ];
     }
 
+    public static function canViewAny(): bool
+    {
+        return auth()->user()?->hasPermissionTo('view_any_calls') ?? false;
+    }
+
     public static function canCreate(): bool
     {
         return false;

@@ -14,7 +14,11 @@ class EnsureUserIsCustomer
         if (! $user) {
             abort(403, 'You must be logged in to access the portal.');
         }
-        // Check Spatie role (guard_name 'web')
+
+        if ($user->hasRole('super_admin')) {
+            return $next($request);
+        }
+
         if (! $user->hasRole('customer', 'web')) {
             abort(403, 'Only customers can access the portal. Your account does not have the customer role.');
         }
