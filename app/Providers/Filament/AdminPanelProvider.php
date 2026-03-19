@@ -6,6 +6,7 @@ use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use App\Filament\Pages\Dashboard;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -17,6 +18,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Illuminate\View\View;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -28,12 +30,33 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => [
+                    50 => '#e6f7ff',
+                    100 => '#bae7ff',
+                    200 => '#91d5ff',
+                    300 => '#69c0ff',
+                    400 => '#40a9ff',
+                    500 => '#1890ff',
+                    600 => '#096dd9',
+                    700 => '#0050b3',
+                    800 => '#003a8c',
+                    900 => '#002766',
+                    950 => '#001529',
+                ],
             ])
+            ->darkMode(true)
+            ->renderHook(
+                'panels::head.end',
+                fn (): View => view('filament.admin.styles')
+            )
+            ->renderHook(
+                'panels::body.end',
+                fn (): View => view('filament.admin.scripts')
+            )
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
-                Pages\Dashboard::class,
+                Dashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
