@@ -38,8 +38,8 @@ class OrderResource extends Resource
                         'delivered' => 'Delivered',
                         'cancelled' => 'Cancelled',
                     ])
-                    ->required()
-                    ->rules([new OrderStatusRule()]),
+                    ->required(),
+                    // ->rules([new OrderStatusRule()]),
                 Forms\Components\DatePicker::make('delivery_date'),
                 Forms\Components\TextInput::make('amount')->numeric()->prefix('$'),
             ]);

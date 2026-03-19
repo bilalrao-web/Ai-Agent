@@ -39,8 +39,8 @@ class TicketResource extends Resource
                         'closed' => 'Closed',
                     ])
                     ->default('open')
-                    ->required()
-                    ->rules([new TicketStatusRule()]),
+                    ->required(),
+                    // ->rules([new TicketStatusRule()]),
             ]);
     }
 
