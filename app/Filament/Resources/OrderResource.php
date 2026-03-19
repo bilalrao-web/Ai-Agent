@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\OrderResource\Pages;
 use App\Models\Order;
+use App\Models\Customer;
 use App\Rules\OrderStatusRule;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -23,8 +24,10 @@ class OrderResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('customer_id')
-                    ->relationship('customer', 'name')
+                    ->label('Customer')
+                    ->options(fn () => Customer::query()->orderBy('name')->pluck('name', 'id'))
                     ->searchable()
+                    ->preload()
                     ->required(),
                 Forms\Components\TextInput::make('order_number')->required()->maxLength(255)->unique(ignoreRecord: true),
                 Forms\Components\Select::make('status')
@@ -84,5 +87,10 @@ class OrderResource extends Resource
     public static function canAccess(): bool
     {
         return auth()->user()?->can('viewAny', static::getModel()) ?? false;
+    }
+
+    public static function canViewAny(): bool
+    {
+        return auth()->user()?->can('view_any_orders') ?? false;
     }
 }

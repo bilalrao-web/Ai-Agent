@@ -16,9 +16,10 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
+        $this->call(PermissionSeeder::class);
+
         $this->call(RoleAndPermissionSeeder::class);
 
-        // 3 admin users (no customer record)
         for ($i = 1; $i <= 3; $i++) {
             $user = User::firstOrCreate(
                 ['email' => "admin{$i}@example.com"],
@@ -33,7 +34,6 @@ class DatabaseSeeder extends Seeder
             }
         }
 
-        // 5 customer users with linked customer record
         $orderStatuses = ['pending', 'processing', 'shipped', 'delivered', 'cancelled'];
         $ticketStatuses = ['open', 'in_progress', 'resolved', 'closed'];
         $issueTypes = ['Delivery delay', 'Damaged product', 'Wrong item', 'Refund request', 'General inquiry'];
@@ -63,7 +63,6 @@ class DatabaseSeeder extends Seeder
                 $customer->update(['user_id' => $user->id]);
             }
 
-            // 2-3 orders per customer (order_number globally unique: ORD-C{customer_id}-{index})
             $numOrders = rand(2, 3);
             for ($o = 1; $o <= $numOrders; $o++) {
                 $orderNumber = 'ORD-C' . $customer->id . '-' . $o;
@@ -80,7 +79,6 @@ class DatabaseSeeder extends Seeder
                 );
             }
 
-            // 1-2 tickets per customer
             for ($t = 0; $t < rand(1, 2); $t++) {
                 Ticket::firstOrCreate(
                     [
@@ -93,7 +91,6 @@ class DatabaseSeeder extends Seeder
             }
         }
 
-        // FAQs
         $faqs = [
             ['question' => 'What are your working hours?', 'answer' => 'We are available 24/7 for customer support.'],
             ['question' => 'How can I track my order?', 'answer' => 'Use the order number on our website or portal to track delivery status.'],
@@ -108,7 +105,6 @@ class DatabaseSeeder extends Seeder
             );
         }
 
-        // Sample call_logs with conversation_messages
         $customers = Customer::with('user')->has('user')->limit(2)->get();
         $queries = ['What is the status of my latest order?', 'I have an issue with my delivered product.', 'What are your working hours?'];
         foreach ($customers as $customer) {

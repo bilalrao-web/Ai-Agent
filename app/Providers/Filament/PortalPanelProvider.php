@@ -30,6 +30,15 @@ class PortalPanelProvider extends PanelProvider
                 'primary' => Color::Amber,
             ])
             ->discoverResources(in: app_path('Filament/Portal/Resources'), for: 'App\\Filament\\Portal\\Resources')
+            ->resources([
+                \App\Filament\Portal\Resources\MyCallHistoryResource::class,
+                \App\Filament\Portal\Resources\MyOrderResource::class,
+                \App\Filament\Portal\Resources\MyTicketResource::class,
+                \App\Filament\Portal\Resources\FaqResource::class,
+                \App\Filament\Portal\Resources\RoleResource::class,       
+                \App\Filament\Portal\Resources\PermissionResource::class,
+                \App\Filament\Portal\Resources\UserResource::class,
+            ])
             ->discoverPages(in: app_path('Filament/Portal/Pages'), for: 'App\\Filament\\Portal\\Pages')
             ->pages([
                 Pages\Dashboard::class,

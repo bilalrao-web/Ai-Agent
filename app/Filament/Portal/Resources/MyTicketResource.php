@@ -62,6 +62,11 @@ class MyTicketResource extends Resource
         ];
     }
 
+    public static function canViewAny(): bool
+    {
+        return auth()->user()?->hasPermissionTo('view_any_tickets') ?? false;
+    }
+
     public static function infolist(Infolist $infolist): Infolist
     {
         return $infolist

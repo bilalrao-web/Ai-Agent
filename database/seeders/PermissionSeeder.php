@@ -14,7 +14,7 @@ use App\Policies\RolePolicy;
 use App\Policies\PermissionPolicy;
 use App\Policies\FaqPolicy;
 
-class RoleAndPermissionSeeder extends Seeder
+class PermissionSeeder extends Seeder
 {
     protected array $policies = [
         CallLogPolicy::class,
@@ -29,17 +29,12 @@ class RoleAndPermissionSeeder extends Seeder
 
     public function run(): void
     {
-        $allPermissions = [];
-        
         foreach ($this->policies as $policy) {
             foreach ($policy::PERMISSIONS as $perm) {
-                if ($perm['type']->value === 'web') {
-                    $allPermissions[] = $perm['name'];
-                    Permission::updateOrCreate(
-                        ['name' => $perm['name'], 'guard_name' => 'web'],
-                        ['name' => $perm['name'], 'guard_name' => 'web']
-                    );
-                }
+                Permission::updateOrCreate(
+                    ['name' => $perm['name'], 'guard_name' => $perm['type']->value],
+                    ['name' => $perm['name'], 'guard_name' => $perm['type']->value]
+                );
             }
         }
 
@@ -51,9 +46,6 @@ class RoleAndPermissionSeeder extends Seeder
             ['name' => 'manage_permissions', 'guard_name' => 'web'],
             ['name' => 'manage_permissions', 'guard_name' => 'web']
         );
-        
-        $allPermissions[] = 'manage_roles';
-        $allPermissions[] = 'manage_permissions';
 
         $superAdmin = Role::updateOrCreate(
             ['name' => 'super_admin', 'guard_name' => 'web'],
@@ -61,35 +53,13 @@ class RoleAndPermissionSeeder extends Seeder
         );
         $superAdmin->syncPermissions(Permission::all());
 
-        $admin = Role::updateOrCreate(
-            ['name' => 'admin', 'guard_name' => 'web'],
-            ['name' => 'admin', 'guard_name' => 'web']
+        $customerRole = Role::updateOrCreate(
+            ['name' => 'customer', 'guard_name' => 'web'],
+            ['name' => 'customer', 'guard_name' => 'web']
         );
-        $admin->syncPermissions(Permission::all());
 
-        $supportAgentPermissions = [];
-        foreach ([CallLogPolicy::class, TicketPolicy::class] as $policy) {
-            foreach ($policy::PERMISSIONS as $perm) {
-                if (in_array($perm['name'], [
-                    'view_any_calls',
-                    'view_call',
-                    'view_any_tickets',
-                    'view_ticket',
-                    'create_ticket',
-                    'update_ticket',
-                ])) {
-                    $supportAgentPermissions[] = $perm['name'];
-                }
-            }
-        }
-
-        $supportAgent = Role::updateOrCreate(
-            ['name' => 'support_agent', 'guard_name' => 'web'],
-            ['name' => 'support_agent', 'guard_name' => 'web']
-        );
-        $supportAgent->syncPermissions($supportAgentPermissions);
-
-        $customerPermissions = [];
+        $defaultCustomerPermissions = [];
+        
         foreach ([TicketPolicy::class, OrderPolicy::class, CallLogPolicy::class] as $policy) {
             foreach ($policy::PERMISSIONS as $perm) {
                 if (in_array($perm['name'], [
@@ -101,15 +71,11 @@ class RoleAndPermissionSeeder extends Seeder
                     'view_any_calls',
                     'view_call',
                 ])) {
-                    $customerPermissions[] = $perm['name'];
+                    $defaultCustomerPermissions[] = $perm['name'];
                 }
             }
         }
 
-        $customer = Role::updateOrCreate(
-            ['name' => 'customer', 'guard_name' => 'web'],
-            ['name' => 'customer', 'guard_name' => 'web']
-        );
-        $customer->syncPermissions($customerPermissions);
+        $customerRole->syncPermissions($defaultCustomerPermissions);
     }
 }

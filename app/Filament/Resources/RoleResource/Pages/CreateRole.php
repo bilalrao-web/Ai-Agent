@@ -4,25 +4,56 @@ namespace App\Filament\Resources\RoleResource\Pages;
 
 use App\Filament\Resources\RoleResource;
 use Filament\Resources\Pages\CreateRecord;
+use Filament\Notifications\Notification;
 
 class CreateRole extends CreateRecord
 {
     protected static string $resource = RoleResource::class;
 
-    /** @var array<int> */
-    protected array $pendingPermissionIds = [];
+    protected array $selectedPermissions = [];
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
+
+    protected function getCreatedNotification(): ?Notification
+    {
+        return Notification::make()
+            ->success()
+            ->title('Role created')
+            ->body('Permissions saved successfully.');
+    }
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $this->pendingPermissionIds = $data['permissions'] ?? [];
-        unset($data['permissions']);
+        $selected = [];
+
+        foreach (RoleResource::moduleGroups() as $moduleName => $modulePerms) {
+            $fieldKey = RoleResource::moduleFieldKey($moduleName);
+            $checked = $data[$fieldKey] ?? [];
+
+            if (is_array($checked)) {
+                $selected = array_merge($selected, $checked);
+            }
+        }
+
+        $this->selectedPermissions = array_unique($selected);
+
+        foreach (RoleResource::moduleGroups() as $moduleName => $modulePerms) {
+            $fieldKey = RoleResource::moduleFieldKey($moduleName);
+            unset($data[$fieldKey]);
+        }
+
         return $data;
     }
 
     protected function afterCreate(): void
     {
-        if (! empty($this->pendingPermissionIds)) {
-            $this->record->syncPermissions($this->pendingPermissionIds);
+        $role = $this->record;
+        
+        if (!empty($this->selectedPermissions)) {
+            $role->syncPermissions($this->selectedPermissions);
         }
     }
 }

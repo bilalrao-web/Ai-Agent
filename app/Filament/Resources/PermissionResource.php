@@ -74,4 +74,9 @@ class PermissionResource extends Resource
     {
         return auth()->user()?->can('manage_permissions') ?? false;
     }
+
+    public static function canViewAny(): bool
+    {
+        return auth()->user()?->can('view_any_permissions') ?? false;
+    }
 }

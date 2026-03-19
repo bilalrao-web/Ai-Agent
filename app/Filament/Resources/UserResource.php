@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
+use Spatie\Permission\Models\Role;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -31,9 +32,16 @@ class UserResource extends Resource
                     ->required(fn (string $operation): bool => $operation === 'create')
                     ->maxLength(255),
                 Forms\Components\Select::make('roles')
-                    ->relationship('roles', 'name')
+                    ->label('Roles')
+                    ->options(fn () => Role::query()->orderBy('name')->pluck('name', 'id'))
                     ->multiple()
+                    ->searchable()
                     ->preload()
+                    ->afterStateHydrated(function (Forms\Components\Select $component, ?User $record): void {
+                        if ($record) {
+                            $component->state($record->roles->pluck('id')->toArray());
+                        }
+                    })
                     ->required(),
             ]);
     }
@@ -74,6 +82,11 @@ class UserResource extends Resource
     }
 
     public static function canAccess(): bool
+    {
+        return auth()->user()?->can('viewAny', static::getModel()) ?? false;
+    }
+
+    public static function canViewAny(): bool
     {
         return auth()->user()?->can('viewAny', static::getModel()) ?? false;
     }
