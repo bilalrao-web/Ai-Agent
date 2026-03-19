@@ -11,7 +11,7 @@ class OrderStatusRule implements ValidationRule
     {
         $allowed = ['pending', 'processing', 'shipped', 'delivered', 'cancelled'];
         if (! in_array($value, $allowed, true)) {
-            $fail('The order status must be one of: pending, processing, shipped, delivered, cancelled.');
+            $fail('The order status must be one of: ' . implode(', ', $allowed) . '.');
         }
     }
 }

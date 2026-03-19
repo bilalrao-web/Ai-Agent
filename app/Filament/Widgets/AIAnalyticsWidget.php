@@ -3,11 +3,14 @@
 namespace App\Filament\Widgets;
 
 use App\Models\CallLog;
+use App\Filament\Traits\ChartOptionsTrait;
 use Filament\Widgets\ChartWidget;
 use Illuminate\Support\Carbon;
 
 class AIAnalyticsWidget extends ChartWidget
 {
+    use ChartOptionsTrait;
+
     protected static ?string $heading = 'AI Analytics - Call Traffic';
     
     protected static ?int $sort = 2;
@@ -88,6 +91,10 @@ class AIAnalyticsWidget extends ChartWidget
 
     protected function getOptions(): array
     {
+        $textColor = $this->getChartTextColor();
+        $mutedColor = $this->getChartMutedColor();
+        $gridColor = $this->getChartGridColor();
+
         return [
             'maintainAspectRatio' => false,
             'responsive' => true,
@@ -95,16 +102,33 @@ class AIAnalyticsWidget extends ChartWidget
                 'legend' => [
                     'position' => 'bottom',
                     'labels' => [
-                        'color' => 'rgba(255,255,255,0.7)',
-                        'padding' => 8,
-                        'font' => ['size' => 11],
+                        'color' => $textColor,
+                        'padding' => 16,
+                        'font' => ['size' => 11, 'family' => "'DM Sans', sans-serif"],
                         'usePointStyle' => true,
                     ],
                 ],
+                'tooltip' => $this->getChartTooltipOptions(),
             ],
             'scales' => [
-                'x' => ['ticks' => ['color' => 'rgba(255,255,255,0.5)', 'font' => ['size' => 10]]],
-                'y' => ['ticks' => ['color' => 'rgba(255,255,255,0.5)', 'font' => ['size' => 10]]],
+                'x' => [
+                    'ticks' => [
+                        'color' => $mutedColor,
+                        'font' => ['size' => 10],
+                    ],
+                    'grid' => [
+                        'color' => $gridColor,
+                    ],
+                ],
+                'y' => [
+                    'ticks' => [
+                        'color' => $mutedColor,
+                        'font' => ['size' => 10],
+                    ],
+                    'grid' => [
+                        'color' => $gridColor,
+                    ],
+                ],
             ],
         ];
     }

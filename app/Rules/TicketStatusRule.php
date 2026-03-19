@@ -11,7 +11,7 @@ class TicketStatusRule implements ValidationRule
     {
         $allowed = ['open', 'in_progress', 'resolved', 'closed'];
         if (! in_array($value, $allowed, true)) {
-            $fail('The ticket status must be one of: open, in_progress, resolved, closed.');
+            $fail('The ticket status must be one of: ' . implode(', ', $allowed) . '.');
         }
     }
 }
